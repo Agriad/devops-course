@@ -7,8 +7,8 @@ jobs:
     name: Greeting
     runs-on: ubuntu-latest
     steps:
+    - uses: peter-evans/create-or-update-comment@v1
     - name: Create comment
-        uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: 1
           body: |
