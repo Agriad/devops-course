@@ -8,8 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running bash
-      - uses: actions/checkout@v2
-        shell: bash
+        uses: actions/checkout@v2
+      - shell: bash
         run:
           echo "Hello"
   comment-issue:
