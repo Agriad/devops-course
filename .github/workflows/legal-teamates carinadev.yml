@@ -6,13 +6,6 @@ jobs:
   read-file:
     name: Reading File
     runs-on: ubuntu-latest
-    steps:
-      - name: Running bash
-        uses: actions/checkout@v2
-        shell: bash
-        run:
-        echo "Hello"
-        pwd
   comment-issue:
     name: Commenting
     needs: read-file
