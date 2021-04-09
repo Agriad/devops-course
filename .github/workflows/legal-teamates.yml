@@ -3,6 +3,13 @@ on:
     types: [opened]
 
 jobs:
+  read-file:
+    name: Reading File
+    runs-on: ubuntu-latest
+    steps:
+      - run:
+        chmod +x "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
+        "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
   comment-issue:
     name: Commenting
     runs-on: ubuntu-latest
