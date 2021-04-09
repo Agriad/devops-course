@@ -10,6 +10,7 @@ jobs:
       - run:
         chmod +x "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
         "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
+      shell: bash
   comment-issue:
     name: Commenting
     runs-on: ubuntu-latest
