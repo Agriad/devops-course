@@ -7,12 +7,14 @@ jobs:
     name: Reading File
     runs-on: ubuntu-latest
     steps:
-      - run:
+      - name: Running bash
+        shell: bash
+        run:
         chmod +x "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
         "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
-      shell: bash
   comment-issue:
     name: Commenting
+    needs: read-file
     runs-on: ubuntu-latest
     steps:
       - name: Create comment
