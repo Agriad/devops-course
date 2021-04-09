@@ -12,7 +12,7 @@ jobs:
         with:
           ref: khaes-kth-registered_ids
       - shell: bash
-        run:
+        run: |
           echo "Hello"
           cat ${GITHUB_WORKSPACE}/Registered_KTH_IDs.txt
   comment-issue:
