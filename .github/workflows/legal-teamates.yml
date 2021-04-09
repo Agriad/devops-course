@@ -3,8 +3,14 @@ on:
     types: [opened]
 
 jobs:
-  build:
-    name: Greeting
+  read-file:
+    name: Reading File
+    runs-on: ubuntu-latest
+    steps:
+      - run:
+        "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
+  comment-issue:
+    name: Commenting
     runs-on: ubuntu-latest
     steps:
       - name: Create comment
