@@ -3,11 +3,14 @@ on:
     types: [opened]
 
 jobs:
-  read-file:
-    name: Reading File
+  start:
+    name: Check Title and Read File
     runs-on: ubuntu-latest
     steps:
+      - name: Checking title
+        if: contains(["Teammate request:"], ${{ github.event.issue.title }})
       - name: Running bash
+        if: success()
         uses: actions/checkout@v2
         with:
           ref: khaes-kth-registered_ids
@@ -18,7 +21,7 @@ jobs:
   
   comment-issue:
     name: Commenting
-    needs: read-file
+    needs: start
     runs-on: ubuntu-latest
     steps:
       - name: Create comment
@@ -42,4 +45,4 @@ jobs:
         with:
           comment: |
             Good luck with your project!
-            If you would like to search for more potential teammates, please create a new issue with the title "Teammate request: <your-kth-email@kth.se>".
+            If you would like to search for more potential teammates, please create a new issue with the template title "Teammate request: <your-kth-email@kth.se>".
