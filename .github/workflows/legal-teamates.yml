@@ -8,10 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Running bash
+        uses: actions/checkout@v2
         shell: bash
         run:
         chmod +x "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
-        "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
+        bash "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
   comment-issue:
     name: Commenting
     needs: read-file
