@@ -5,7 +5,6 @@ on:
 jobs:
   read-file:
     name: Reading File
-    needs: check-title
     runs-on: ubuntu-latest
     steps:
       - name: Running bash
