@@ -3,9 +3,6 @@ on:
     types: [opened]
 
 jobs:
-  read-file:
-    name: Reading File
-    runs-on: ubuntu-latest
   comment-issue:
     name: Commenting
     needs: read-file
