@@ -5,6 +5,7 @@ on:
 jobs:
   read-file:
     name: Reading File
+    needs: check-title
     runs-on: ubuntu-latest
     steps:
       - name: Running bash
@@ -15,6 +16,7 @@ jobs:
         run: |
           echo "Hello"
           cat ${GITHUB_WORKSPACE}/Registered_KTH_IDs.txt
+  
   comment-issue:
     name: Commenting
     needs: read-file
@@ -31,3 +33,10 @@ jobs:
 
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
+
+  close-issue:
+    name: Closing issue
+    needs: comment-issue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peter-evans/close-issue@v1
