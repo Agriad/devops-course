@@ -12,7 +12,6 @@ jobs:
         shell: bash
         run:
         echo "Hello"
-        pwd
   comment-issue:
     name: Commenting
     needs: read-file
