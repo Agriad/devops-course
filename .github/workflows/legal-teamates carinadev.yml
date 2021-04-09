@@ -9,7 +9,7 @@ jobs:
     steps:
       - name: Running bash
         uses: actions/checkout@v2
-        shell: bash
+      - shell: bash
         run:
           echo "Hello"
   comment-issue:
