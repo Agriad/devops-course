@@ -9,12 +9,12 @@ jobs:
     steps:
       - name: Running bash
         uses: actions/checkout@v2
+        with:
+          ref: khaes-kth-registered_ids
       - shell: bash
-        run: |
+        run:
           echo "Hello"
-          cd ${GITHUB_WORKSPACE}
-          git checkout khaes-kth-registered_ids
-          cat ${GITHUB_WORKSPACE}/.github/Registered_KTH_IDs.txt
+          cat ${GITHUB_WORKSPACE}/Registered_KTH_IDs.txt
   comment-issue:
     name: Commenting
     needs: read-file
