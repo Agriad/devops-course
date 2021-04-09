@@ -39,3 +39,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: peter-evans/close-issue@v1
+      with:
+          comment: |
+            Good luck with your project!
+            If you would like to search for more potential teammates, please create a new issue with the title "Teammate request: <your-kth-email@kth.se>".
