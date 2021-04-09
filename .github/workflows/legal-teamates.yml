@@ -12,7 +12,7 @@ jobs:
         shell: bash
         run:
         chmod +x "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
-        bash "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
+        "${GITHUB_WORKSPACE}/.github/workflows/read-file.sh"
   comment-issue:
     name: Commenting
     needs: read-file
