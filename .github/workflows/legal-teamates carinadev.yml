@@ -7,9 +7,6 @@ jobs:
     name: Check Title and Read File
     runs-on: ubuntu-latest
     steps:
-      - name: Checking title
-        if: contains(["Teammate request:"], ${{ github.event.issue.title }})
-        run: echo "Finding teammates"
       - name: Running bash
         uses: actions/checkout@v2
         with:
