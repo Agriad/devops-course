@@ -11,15 +11,14 @@ jobs:
         if: contains(["Teammate request:"], ${{ github.event.issue.title }})
         steps:
           - run: echo "Finding teammates"
-        - name: Running bash
-          if: ${{ success() }}
-          uses: actions/checkout@v2
-          with:
-            ref: khaes-kth-registered_ids
-        - shell: bash
-          run: |
-            echo "Hello"
-            cat ${GITHUB_WORKSPACE}/Registered_KTH_IDs.txt
+      - name: Running bash
+        uses: actions/checkout@v2
+        with:
+          ref: khaes-kth-registered_ids
+      - shell: bash
+        run: |
+          echo "Hello"
+          cat ${GITHUB_WORKSPACE}/Registered_KTH_IDs.txt
   
   comment-issue:
     name: Commenting
