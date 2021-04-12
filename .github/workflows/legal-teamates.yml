@@ -9,6 +9,8 @@ jobs:
     steps:
       - name: Checking title
         if: contains(["Teammate request:"], ${{ github.event.issue.title }})
+        steps:
+          - run: echo "Finding teammates"
       - name: Running bash
         if: success()
         uses: actions/checkout@v2
