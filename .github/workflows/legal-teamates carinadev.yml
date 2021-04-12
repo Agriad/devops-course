@@ -3,18 +3,26 @@ on:
     types: [opened]
 
 jobs:
-  read-file:
-    name: Reading File
+  start:
+    name: Check Title and Read File
     runs-on: ubuntu-latest
     steps:
-      - name: Running bash
-        uses: actions/checkout@v2
-      - shell: bash
-        run:
-          echo "Hello"
+      - name: Checking title
+        if: contains(["Teammate request:"], ${{ github.event.issue.title }})
+        steps:
+          - run: echo "Finding teammates"
+          - name: Running bash
+            uses: actions/checkout@v2
+            with:
+              ref: khaes-kth-registered_ids
+          - shell: bash
+            run: |
+              echo "Hello"
+              cat ${GITHUB_WORKSPACE}/Registered_KTH_IDs.txt
+      
   comment-issue:
     name: Commenting
-    needs: read-file
+    needs: start
     runs-on: ubuntu-latest
     steps:
       - name: Create comment
@@ -25,5 +33,17 @@ jobs:
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
             - Created by [create-or-update-comment][1]
+
             [1]: https://github.com/peter-evans/create-or-update-comment
           reactions: '+1'
+
+  close-issue:
+    name: Closing issue
+    needs: comment-issue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: peter-evans/close-issue@v1
+        with:
+          comment: |
+            Good luck with your project!
+            If you would like to search for more potential teammates, please create a new issue with the template title "Teammate request: <your-kth-email@kth.se>".
