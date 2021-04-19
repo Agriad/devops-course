@@ -35,8 +35,20 @@ async function getAllReadme(octokit, owner, repoName, ref) {
 
     let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
     console.log(presentationPayload);
-    let presentationWeek = presentationPayload.name;
-    console.log(presentationWeek);
+    let presentationData = presentationPayload.data;
+    
+    // presentationData.forEach(week => {
+    //     if (!week.name.localeCompare("README.md")) {
+    //         let weekName = week.name;
+    //         let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
+    //         console.log(presentationWeekPayload);
+    //     }
+    // });
+
+    let weekNamePayload = presentationPayload[1];
+    let weekName = weekNamePayload.name;
+    let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
+    console.log(presentationWeekPayload);
 }
 
 /**
