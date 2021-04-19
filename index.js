@@ -3,6 +3,15 @@ const github = require('@actions/github');
 var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
+/**
+ * Using the GitHub API, sends a GET request for a file
+ * @param {Object} octokit octokit to handle the GitHub API
+ * @param {string} owner owner of the repository
+ * @param {string} repoName repository name
+ * @param {string} path path of the file
+ * @param {string} ref the branch where the file is located
+ * @returns {Object} Payload from the request
+ */
 async function getFile(octokit, owner, repoName, path, ref) {
     return new Promise((resolve, reject) => {
         resolve(
@@ -37,7 +46,7 @@ var getReadme = async function(octokit, owner, repo, dir, callingBranch='master'
 /**
  * Parses the title
  * @param  {Object} payload Payload containing the title
- * @return {String}         String containing the requester's email
+ * @return {string}         String containing the requester's email
  */
  function parseTitle(payload) {
     const title = payload.issue.title;
