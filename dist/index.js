@@ -6062,7 +6062,13 @@ var atob = __nccwpck_require__(547);
 const { Context } = __nccwpck_require__(210);
 
 function createDataStructure(studentListText) {
-    const names = studentListText.split("\n");
+    let names = studentListText.split("\n");
+    
+    if (names[names.length - 1].localeCompare("")) {
+        names.pop();
+    }
+
+    names.sort();
     let dataStructure = [];
 
     names.forEach(name => {

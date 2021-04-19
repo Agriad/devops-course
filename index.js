@@ -4,7 +4,13 @@ var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
 function createDataStructure(studentListText) {
-    const names = studentListText.split("\n");
+    let names = studentListText.split("\n");
+    
+    if (names[names.length - 1].localeCompare("")) {
+        names.pop();
+    }
+
+    names.sort();
     let dataStructure = [];
 
     names.forEach(name => {
