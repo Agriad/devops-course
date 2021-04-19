@@ -6123,13 +6123,18 @@ async function main() {
             console.log("Content of the README file:");
             console.log(markdown);
 
-            var paragraph = 'carinawi@kth.se justin stefan bob@kth.se john';
+            var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
             
             const regex = new RegExp('[a-z]*@kth');
-            const found = paragraph.match(regex);
-            
+            var matches = [];
+            var match = regex.exec(txt);
+            while (match != null) {
+                matches.push(match[1]);
+                match = regex.exec(txt);
+            }
+
             console.log("emails from the readme-file");
-            console.log(found);
+            console.log(matches);
 
 
             let map = new Map();
