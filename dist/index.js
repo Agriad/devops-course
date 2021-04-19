@@ -6083,16 +6083,17 @@ function createDataStructure(studentListText) {
 async function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
 
-    projects.forEach(category => {
-        let query = new Promise((resolve, reject) => {
-        resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
-        reject("Error")
-        })
-        query.then(payload => console.log(payload));
-    });
+    // projects.forEach(category => {
+    //     let query = new Promise((resolve, reject) => {
+    //     resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
+    //     reject("Error")
+    //     })
+    //     query.then(payload => console.log(payload));
+    // });
 
     let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
     console.log(presentationPayload);
+    
 }
 
 /**
