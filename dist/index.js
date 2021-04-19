@@ -6122,6 +6122,10 @@ async function main() {
         const repoName = issue.repo;
         const branch = mainBranch;
 
+        // Get the student list
+        let studentListText = await getReadme(octokit, owner, repoName, listFile, mainBranch);
+        console.log(studentListText);
+
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
 
