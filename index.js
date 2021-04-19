@@ -4,9 +4,49 @@ var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
 /**
+ * Using the GitHub API, sends a GET request for a file
+ * @param {Object} octokit octokit to handle the GitHub API
+ * @param {string} owner owner of the repository
+ * @param {string} repoName repository name
+ * @param {string} path path of the file
+ * @param {string} ref the branch where the file is located
+ * @returns {Object} Payload from the request
+ */
+async function getFile(octokit, owner, repoName, path, ref) {
+    return new Promise((resolve, reject) => {
+        resolve(
+        octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+            owner: owner,
+            repo: repoName,
+            path: path,
+            ref: ref
+        })),
+        reject("Error")
+    })
+}
+
+// Inspired from https://github.com/KTH/devops-course/pull/1148/files
+// this function fetches a readme in a specific directory on github
+var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
+    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
+        owner: owner,
+        repo: repo,
+        dir: dir,
+        ref: callingBranch
+    }).then(file =>{ 
+        x = atob(file.data.content)
+        resolve(file.data)
+    }).catch(err => {
+      console.log(err)
+    }) 
+    })
+  
+}
+
+/**
  * Parses the title
  * @param  {Object} payload Payload containing the title
- * @return {String}         String containing the requester's email
+ * @return {string}         String containing the requester's email
  */
  function parseTitle(payload) {
     const title = payload.issue.title;
@@ -60,9 +100,15 @@ async function main() {
         console.log("specifying git varables");
 
         // Variables required to access files in repo
-        const owner = github.context.payload.repository.owner.login
-        const repoName = "devops-course"
-        const branch = "2021"
+        const owner = issue.owner;
+        const repoName = issue.repo;
+        const branch = mainBranch;
+
+        const studentListPayload = await getFile(octokit, owner, repoName, listFile, listBranch);
+        
+        const studentListBase64 = studentListPayload.data.content;
+        const studentListText = atob(studentListBase64);
+        console.log(studentListText);
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
@@ -118,24 +164,6 @@ async function main() {
     } catch (error) {
         core.setFailed(error.message);
     }   
-}
-
-// stolen (then modified) from https://github.com/KTH/devops-course/pull/1148/files
-// this function fetches a readme in a specific directory on github
-var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
-    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
-        owner: owner,
-        repo: repo,
-        dir: dir,
-        ref: callingBranch
-    }).then(file =>{ 
-        x = atob(file.data.content)
-        resolve(file.data)
-    }).catch(err => {
-      console.log(err)
-    }) 
-    })
-  
 }
 
 main()

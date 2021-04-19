@@ -8,7 +8,7 @@ inputs:
     description: "Branch name containing the list of students"
     required: true
   list-file:
-    description: "Name of the text file containing the list of students"
+    description: "Name of the text and location of the file containing the list of students"
     required: true
   main-branch:
     description: "Branch name where the course is being held"
