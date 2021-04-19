@@ -6118,9 +6118,10 @@ async function main() {
             // Extract The readme file with the feedback from the correct directory
 
             // get all folders
+            /*
             await octokit.request('GET /repos/{owner}/{repoName}/{dirs}', {
                 dirs: 'dirs'
-            })
+            })*/
 
             console.log("getting all dirs");
             console.log(dirs);
