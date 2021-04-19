@@ -46,7 +46,7 @@ async function getAllReadme(octokit, owner, repoName, ref) {
         let presentationGroups = presentationWeekPayload.data;
 
         for (let index = 1; index < presentationGroups.length; index++) {
-            let groupPayload = presentationGroups[1];
+            let groupPayload = presentationGroups[index];
             let groupName = groupPayload.name;
             let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
             // console.log(readmePayload);
@@ -164,7 +164,6 @@ async function main() {
         
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
-        console.log(studentListText);
 
         // Make a data structure for the students
         let dataStructure = createDataStructure(studentListText);
