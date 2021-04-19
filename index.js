@@ -27,6 +27,9 @@ const { Context } = require('@actions/github/lib/context');
 async function main() {
     try {
         const githubSecret = core.getInput("github-token");
+        const listBranch = core.getInput("list-branch");
+        const listFile = core.getInput("list-file");
+        const mainBranch = core.getInput("main-branch");
         const context = github.context;
         const payload = context.payload;
         const { issue } = github.context;
