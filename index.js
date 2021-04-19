@@ -49,6 +49,12 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     let weekName = weekNamePayload.name;
     let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
     console.log(presentationWeekPayload);
+    
+    let presentationGroups = presentationWeekPayload.data;
+    let annnikGroupPayload = presentationGroups[1];
+    let annnikGroupName = annnikGroupPayload.name;
+    let readmePayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + annnikGroupName, ref);
+    console.log(readmePayload);
 }
 
 /**
