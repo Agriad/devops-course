@@ -3,6 +3,18 @@ const github = require('@actions/github');
 var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
+function createDataStructure(studentListText) {
+    const names = studentListText.split("\n");
+    let dataStructure = [];
+
+    names.forEach(name => {
+        let data = [name + "@kth.se", 0];
+        dataStructure.push(data)
+    });
+
+    return dataStructure
+}
+
 /**
  * Using the GitHub API, sends a GET request for a file
  * @param {Object} octokit octokit to handle the GitHub API
@@ -104,11 +116,16 @@ async function main() {
         const repoName = issue.repo;
         const branch = mainBranch;
 
+        // Get student list
         const studentListPayload = await getFile(octokit, owner, repoName, listFile, listBranch);
         
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
         console.log(studentListText);
+
+        // Make a data structure for the students
+        let dataStructure = createDataStructure(studentListText);
+        console.log(dataStructure);
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
