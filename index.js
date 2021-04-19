@@ -70,16 +70,17 @@ async function main() {
             const regex = new RegExp('[a-z]*@kth');
             var matches = [];
             var match = regex.exec(txt);
+
+            console.log(match);
+            /*
             while (match != null) {
                 matches.push(match[1]);
                 match = regex.exec(txt);
-            }
+            }*/
 
             console.log("emails from the readme-file");
             console.log(matches);
 
-
-            let map = new Map();
             
             //todo: calculate all legal people
 
