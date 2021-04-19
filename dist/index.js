@@ -6185,7 +6185,7 @@ async function main() {
 // stolen (then modified) from https://github.com/KTH/devops-course/pull/1148/files
 // this function fetches a readme in a specific directory on github
 var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
-    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
+    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/{dir}', {
         owner: owner,
         repo: repo,
         dir: dir,
