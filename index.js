@@ -134,6 +134,9 @@ async function main() {
         let dataStructure = createDataStructure(studentListText);
         console.log(dataStructure);
 
+        const files = await getFile(octokit, owner, repoName, "contributions/", mainBranch);
+        console.log(files);
+
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
 
