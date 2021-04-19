@@ -5510,10 +5510,17 @@ exports.FetchError = FetchError;
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 387:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var wrappy = __nccwpck_require__(247)
+=======
+/***/ 654:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+var wrappy = __nccwpck_require__(999)
+>>>>>>> d23c053... test
 module.exports = wrappy(once)
 module.exports.strict = wrappy(onceStrict)
 
@@ -5559,15 +5566,26 @@ function onceStrict (fn) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 939:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 module.exports = __nccwpck_require__(985);
+=======
+/***/ 237:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = __nccwpck_require__(576);
+>>>>>>> d23c053... test
 
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 985:
+=======
+/***/ 576:
+>>>>>>> d23c053... test
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -5839,7 +5857,11 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 534:
+=======
+/***/ 757:
+>>>>>>> d23c053... test
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -5865,7 +5887,11 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 247:
+=======
+/***/ 999:
+>>>>>>> d23c053... test
 /***/ ((module) => {
 
 // Returns a wrapper function that returns a wrapped callback
@@ -5905,7 +5931,11 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 522:
+=======
+/***/ 254:
+>>>>>>> d23c053... test
 /***/ ((module) => {
 
 module.exports = eval("require")("encoding");
@@ -5916,32 +5946,104 @@ module.exports = eval("require")("encoding");
 /***/ 357:
 /***/ ((module) => {
 
-module.exports = eval("require")("@actions/core");
-
+"use strict";
+module.exports = require("assert");;
 
 /***/ }),
 
-/***/ 832:
+/***/ 614:
 /***/ ((module) => {
 
-module.exports = eval("require")("@actions/github");
+"use strict";
+module.exports = require("events");;
 
+/***/ }),
+
+/***/ 747:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("fs");;
+
+/***/ }),
+
+/***/ 605:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("http");;
 
 /***/ }),
 
 /***/ 211:
 /***/ ((module) => {
 
-module.exports = eval("require")("@actions/github/lib/context");
-
+"use strict";
+module.exports = require("https");;
 
 /***/ }),
 
-/***/ 455:
+/***/ 631:
 /***/ ((module) => {
 
-module.exports = eval("require")("atob");
+"use strict";
+module.exports = require("net");;
 
+/***/ }),
+
+/***/ 87:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("os");;
+
+/***/ }),
+
+/***/ 622:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("path");;
+
+/***/ }),
+
+/***/ 413:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("stream");;
+
+/***/ }),
+
+/***/ 16:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("tls");;
+
+/***/ }),
+
+/***/ 835:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("url");;
+
+/***/ }),
+
+/***/ 669:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("util");;
+
+/***/ }),
+
+/***/ 761:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("zlib");;
 
 /***/ })
 
@@ -5967,7 +6069,7 @@ module.exports = eval("require")("atob");
 /******/ 		// Execute the module function
 /******/ 		var threw = true;
 /******/ 		try {
-/******/ 			__webpack_modules__[moduleId](module, module.exports, __nccwpck_require__);
+/******/ 			__webpack_modules__[moduleId].call(module.exports, module, module.exports, __nccwpck_require__);
 /******/ 			threw = false;
 /******/ 		} finally {
 /******/ 			if(threw) delete __webpack_module_cache__[moduleId];
@@ -5985,6 +6087,7 @@ var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
 <<<<<<< HEAD
+<<<<<<< HEAD
 const core = __nccwpck_require__(115);
 const github = __nccwpck_require__(7);
 var atob = __nccwpck_require__(843);
@@ -5995,6 +6098,12 @@ const github = __nccwpck_require__(832);
 var atob = __nccwpck_require__(455);
 const { Context } = __nccwpck_require__(211);
 >>>>>>> 57f643b... Check if works
+=======
+const core = __nccwpck_require__(619);
+const github = __nccwpck_require__(637);
+var atob = __nccwpck_require__(651);
+const { Context } = __nccwpck_require__(377);
+>>>>>>> d23c053... test
 
 /**
  * Parses the title
