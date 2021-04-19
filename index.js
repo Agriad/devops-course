@@ -34,32 +34,28 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     // });
 
     let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
-    console.log(presentationPayload);
+    // console.log(presentationPayload);
     let presentationData = presentationPayload.data;
-    
-    // presentationData.forEach(week => {
-    //     if (!week.name.localeCompare("README.md")) {
-    //         let weekName = week.name;
-    //         let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
-    //         console.log(presentationWeekPayload);
-    //     }
-    // });
 
-    let weekNamePayload = presentationData[1];
-    let weekName = weekNamePayload.name;
-    let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
-    console.log(presentationWeekPayload);
-    
-    let presentationGroups = presentationWeekPayload.data;
-    let annnikGroupPayload = presentationGroups[1];
-    let annnikGroupName = annnikGroupPayload.name;
-    // let readmePayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + annnikGroupName, ref);
-    let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + annnikGroupName, ref)
-    console.log(readmePayload);
+    for (let index = 1; index < presentationData.length; index++) {
+        let weekNamePayload = presentationData[index];
+        let weekName = weekNamePayload.name;
+        let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
+        // console.log(presentationWeekPayload);
 
-    let readmeContentBase64 = readmePayload.content;
-    let readmeContent = atob(readmeContentBase64);
-    console.log(readmeContent);
+        let presentationGroups = presentationWeekPayload.data;
+
+        for (let index = 1; index < presentationGroups.length; index++) {
+            let groupPayload = presentationGroups[1];
+            let groupName = groupPayload.name;
+            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
+            // console.log(readmePayload);
+
+            let readmeContentBase64 = readmePayload.content;
+            let readmeContent = atob(readmeContentBase64);
+            console.log(readmeContent);
+        }
+    }
 }
 
 /**
