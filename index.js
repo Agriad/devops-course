@@ -56,6 +56,10 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     // let readmePayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + annnikGroupName, ref);
     let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + annnikGroupName, ref)
     console.log(readmePayload);
+
+    let readmeContentBase64 = readmePayload.content;
+    let readmeContent = atob(readmeContentBase64);
+    console.log(readmeContent);
 }
 
 /**
