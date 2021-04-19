@@ -5,14 +5,7 @@ const { Context } = require('@actions/github/lib/context');
 
 function createDataStructure(studentListText) {
     let names = studentListText.split("\n");
-    
-    if (names[names.length - 1].localeCompare("")) {
-        names.pop();
-        console.log("pop");
-    }
-
-    console.log(names[names.length - 1].charCodeAt(0));
-
+    names.pop();
     names.sort();
     let dataStructure = [];
 

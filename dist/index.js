@@ -6063,14 +6063,7 @@ const { Context } = __nccwpck_require__(210);
 
 function createDataStructure(studentListText) {
     let names = studentListText.split("\n");
-    
-    if (names[names.length - 1].localeCompare("")) {
-        names.pop();
-        console.log("pop");
-    }
-
-    console.log(names[names.length - 1].charCodeAt(0));
-
+    names.pop();
     names.sort();
     let dataStructure = [];
 
