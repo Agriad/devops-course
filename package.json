@@ -1,7 +1,7 @@
 {
   "name": "legal-teammates",
   "version": "1.0.0",
-  "description": "",
+  "description": "This repository contains the material and content of the DevOps course at KTH Royal Institute of Technology",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
