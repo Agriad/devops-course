@@ -3587,6 +3587,21 @@ exports.request = request;
 
 /***/ }),
 
+/***/ 547:
+/***/ ((module) => {
+
+"use strict";
+
+
+function atob(str) {
+  return Buffer.from(str, 'base64').toString('binary');
+}
+
+module.exports = atob.atob = atob;
+
+
+/***/ }),
+
 /***/ 108:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -5890,14 +5905,6 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 958:
-/***/ ((module) => {
-
-module.exports = eval("require")("atob");
-
-
-/***/ }),
-
 /***/ 431:
 /***/ ((module) => {
 
@@ -6051,7 +6058,7 @@ var __webpack_exports__ = {};
 (() => {
 const core = __nccwpck_require__(127);
 const github = __nccwpck_require__(134);
-var atob = __nccwpck_require__(958);
+var atob = __nccwpck_require__(547);
 const { Context } = __nccwpck_require__(210);
 
 /**
