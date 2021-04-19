@@ -1,0 +1,25 @@
+{
+  "name": "legal-teammates",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Agriad/legal-teammates.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Agriad/legal-teammates/issues"
+  },
+  "homepage": "https://github.com/Agriad/legal-teammates#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "atob": "^2.1.2"
+  }
+}
