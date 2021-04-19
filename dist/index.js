@@ -6130,7 +6130,7 @@ async function main() {
         let studentListText = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
             owner: owner,
             repo: repoName,
-            path: listFile
+            path: "README.md"
           })
         console.log(studentListText);
 
