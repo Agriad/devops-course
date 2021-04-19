@@ -6123,7 +6123,11 @@ async function main() {
         const branch = mainBranch;
 
         // Get the student list
-        let studentListText = await getReadme(octokit, owner, repoName, listFile, mainBranch);
+        let studentListText = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}', {
+            owner: owner,
+            repo: repoName,
+            branch: mainBranch
+          })
         console.log(studentListText);
 
         // Example directory
