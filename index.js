@@ -58,6 +58,13 @@ async function main() {
         console.log("Content of the README file:");
         console.log(markdown);
 
+        var paragraph = 'carinawi@kth.se justin stefan bob@kth.se john';
+        
+        const regex = new RegExp('[a-z]*@kth');
+        const found = paragraph.match(regex);
+
+        console.log(found);
+
         /*
         
         if (parsedTitle != "") {
