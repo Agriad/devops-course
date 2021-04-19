@@ -41,36 +41,43 @@ async function main() {
         const octokit = github.getOctokit(githubSecret);
 
         
-        console.log("accessing readme");
 
-        // Variables required to access files in repo
-        const owner = github.context.payload.repository.owner.login
-        const repoName = "devops-course"
-        const branch = "2021"
-
-        // Example directory
-        const dir = "contributions/essay/carinawi-urama"
-
-        // Extract The readme file with the feedback from the correct directory
-        var file = await getReadme(octokit,owner,repoName,dir,branch)
-        var markdown = atob(file.content) //atob returns a string with the content of the README file
-
-        console.log("Content of the README file:");
-        console.log(markdown);
-
-        var paragraph = 'carinawi@kth.se justin stefan bob@kth.se john';
-        
-        const regex = new RegExp('[a-z]*@kth');
-        const found = paragraph.match(regex);
-
-        console.log(found);
-
-        /*
         
         if (parsedTitle != "") {
+            // if title contains "Teammate request" then we should do everything
             console.log("title contains Teammate request:");
 
-            // starts with getting 
+            console.log("specifying git varables");
+
+            // Variables required to access files in repo
+            const owner = github.context.payload.repository.owner.login
+            const repoName = "devops-course"
+            const branch = "2021"
+
+            // Example directory
+            const dir = "contributions/essay/carinawi-urama"
+
+            console.log("accessing readme");
+            // Extract The readme file with the feedback from the correct directory
+            var file = await getReadme(octokit,owner,repoName,dir,branch)
+            var markdown = atob(file.content) //atob returns a string with the content of the README file
+
+            console.log("Content of the README file:");
+            console.log(markdown);
+
+            var paragraph = 'carinawi@kth.se justin stefan bob@kth.se john';
+            
+            const regex = new RegExp('[a-z]*@kth');
+            const found = paragraph.match(regex);
+            
+            console.log("emails from the readme-file");
+            console.log(found);
+
+
+            let map = new Map();
+            
+            //todo: calculate all legal people
+
 
 
             // Add closing message
@@ -107,7 +114,6 @@ async function main() {
 
         }
 
-        */
 
        
     } catch (error) {
