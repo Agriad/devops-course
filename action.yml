@@ -4,6 +4,15 @@ inputs:
   github-token: 
     description: "Github secret"
     required: true
+  list-branch:
+    description: "Branch name containing the list of students"
+    required: true
+  list-file:
+    description: "Name of the text file containing the list of students"
+    required: true
+  main-branch:
+    description: "Branch name where the course is being held"
+    required: true
 outputs:
   legal-teammates: # id of output
     description: 'A comment with a list of legal teammates'

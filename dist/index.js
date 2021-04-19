@@ -5510,10 +5510,17 @@ exports.FetchError = FetchError;
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 387:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 var wrappy = __nccwpck_require__(247)
+=======
+/***/ 654:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+var wrappy = __nccwpck_require__(999)
+>>>>>>> d23c053... test
 module.exports = wrappy(once)
 module.exports.strict = wrappy(onceStrict)
 
@@ -5559,15 +5566,26 @@ function onceStrict (fn) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 939:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
 module.exports = __nccwpck_require__(985);
+=======
+/***/ 237:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+module.exports = __nccwpck_require__(576);
+>>>>>>> d23c053... test
 
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 985:
+=======
+/***/ 576:
+>>>>>>> d23c053... test
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -5839,7 +5857,11 @@ exports.debug = debug; // for test
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 534:
+=======
+/***/ 757:
+>>>>>>> d23c053... test
 /***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
@@ -5865,7 +5887,11 @@ exports.getUserAgent = getUserAgent;
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 247:
+=======
+/***/ 999:
+>>>>>>> d23c053... test
 /***/ ((module) => {
 
 // Returns a wrapper function that returns a wrapped callback
@@ -5905,7 +5931,11 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
+<<<<<<< HEAD
 /***/ 522:
+=======
+/***/ 254:
+>>>>>>> d23c053... test
 /***/ ((module) => {
 
 module.exports = eval("require")("encoding");
@@ -6056,23 +6086,40 @@ module.exports = require("zlib");;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
+<<<<<<< HEAD
+<<<<<<< HEAD
 const core = __nccwpck_require__(115);
 const github = __nccwpck_require__(7);
 var atob = __nccwpck_require__(843);
 const { Context } = __nccwpck_require__(343);
+=======
+const core = __nccwpck_require__(518);
+const github = __nccwpck_require__(832);
+var atob = __nccwpck_require__(455);
+const { Context } = __nccwpck_require__(211);
+>>>>>>> 57f643b... Check if works
+=======
+const core = __nccwpck_require__(619);
+const github = __nccwpck_require__(637);
+var atob = __nccwpck_require__(651);
+const { Context } = __nccwpck_require__(377);
+>>>>>>> d23c053... test
 
 /**
  * Parses the title
  * @param  {Object} payload Payload containing the title
  * @return {String}         String containing the requester's email
  */
-function parseTitle(payload) {
+ function parseTitle(payload) {
     const title = payload.issue.title;
 
     if (title.includes("Teammate request:")) {
-        return "a";
+        const splitTitle = title.split(":");
+        let email = splitTitle[1];
+        email = email.slice(1, email.length);
+        return email;
     } else {
-        return "";
+        return null;
     }
 }
 
@@ -6082,6 +6129,9 @@ function parseTitle(payload) {
 async function main() {
     try {
         const githubSecret = core.getInput("github-token");
+        const listBranch = core.getInput("list-branch");
+        const listFile = core.getInput("list-file");
+        const mainBranch = core.getInput("main-branch");
         const context = github.context;
         const payload = context.payload;
         const { issue } = github.context;
@@ -6094,10 +6144,16 @@ async function main() {
             return;
         }
 
-        const parsedTitle = parseTitle(payload);
+        const email = parseTitle(payload);
+
+        if (email != null) {
+            console.log("title contains Teammate request:");
+            console.log(email);
+        } else {
+            console.log("wrong title");
+        }
 
         const octokit = github.getOctokit(githubSecret);
-
         
 
         
@@ -6120,6 +6176,7 @@ async function main() {
             var file = await getReadme(octokit,owner,repoName,dir,branch)
             var markdown = atob(file.content) //atob returns a string with the content of the README file
 
+<<<<<<< HEAD
             console.log("Content of the README file:");
             console.log(markdown);
 
@@ -6153,20 +6210,41 @@ async function main() {
 
         } else {
             console.log("wrong title");
+=======
+        // TODO finish this
+        // Comment about the legal teammates
+        await octokit.issues.createComment({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            body: "PLACEHOLDER"
+        });
+>>>>>>> 57f643b... Check if works
 
-            // Add closing message
-            await octokit.issues.createComment({
-                owner: issue.owner,
-                repo: issue.repo,
-                issue_number: issue.number,
-                body: "Good luck with your project!\n" +
-                "If you would like to search for more potential teammates, " +
-                "please create a new issue with the template title:\n" +
-                "\"Teammate request: your-kth-email@kth.se\"."
-            });
+        // Inspired by https://github.com/marketplace/actions/close-issue
+        // Add closing message
+        await octokit.issues.createComment({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            body: "Good luck with your project!\n" +
+            "If you would like to search for more potential teammates, " +
+            "please create a new issue with the template title:\n" +
+            "\"Teammate request: your-kth-email@kth.se\"."
+        });
 
-        }
+        // Closes the issue
+        await octokit.issues.update({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            state: "closed"
+        });
 
+<<<<<<< HEAD
+=======
+        console.log(`It is working`);
+>>>>>>> 57f643b... Check if works
 
        
     } catch (error) {
