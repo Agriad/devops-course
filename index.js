@@ -49,75 +49,71 @@ async function main() {
             console.log(email);
         } else {
             console.log("wrong title");
+            return
         }
 
         const octokit = github.getOctokit(githubSecret);
         
-        if (parsedTitle != "") {
-            // if title contains "Teammate request" then we should do everything
-            console.log("title contains Teammate request:");
+        // if title contains "Teammate request" then we should do everything
+        console.log("title contains Teammate request:");
 
-            console.log("specifying git varables");
+        console.log("specifying git varables");
 
-            // Variables required to access files in repo
-            const owner = github.context.payload.repository.owner.login
-            const repoName = "devops-course"
-            const branch = "2021"
+        // Variables required to access files in repo
+        const owner = github.context.payload.repository.owner.login
+        const repoName = "devops-course"
+        const branch = "2021"
 
-            // Example directory
-            const dir = "contributions/essay/carinawi-urama"
+        // Example directory
+        const dir = "contributions/essay/carinawi-urama"
 
-            console.log("accessing readme");
-            // Extract The readme file with the feedback from the correct directory
-            var file = await getReadme(octokit,owner,repoName,dir,branch)
-            var markdown = atob(file.content) //atob returns a string with the content of the README file
+        console.log("accessing readme");
+        // Extract The readme file with the feedback from the correct directory
+        var file = await getReadme(octokit,owner,repoName,dir,branch)
+        var markdown = atob(file.content) //atob returns a string with the content of the README file
 
-            console.log("Content of the README file:");
-            console.log(markdown);
+        console.log("Content of the README file:");
+        console.log(markdown);
 
-            //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
-            
-            const regex = '[a-z]*@kth';
-                        
-            const matches = [...markdown.matchAll(regex)];
+        //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
+        
+        const regex = '[a-z]*@kth';
+                    
+        const matches = [...markdown.matchAll(regex)];
 
-            console.log("emails from the readme-file");
-            console.log(matches);
+        console.log("emails from the readme-file");
+        console.log(matches);
 
-            // TODO finish this
-            // Comment about the legal teammates
-            await octokit.issues.createComment({
-                owner: issue.owner,
-                repo: issue.repo,
-                issue_number: issue.number,
-                body: "PLACEHOLDER"
-            });
+        // TODO finish this
+        // Comment about the legal teammates
+        await octokit.issues.createComment({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            body: "PLACEHOLDER"
+        });
 
-            // Inspired by https://github.com/marketplace/actions/close-issue
-            // Add closing message
-            await octokit.issues.createComment({
-                owner: issue.owner,
-                repo: issue.repo,
-                issue_number: issue.number,
-                body: "Good luck with your project!\n" +
-                "If you would like to search for more potential teammates, " +
-                "please create a new issue with the template title:\n" +
-                "\"Teammate request: your-kth-email@kth.se\"."
-            });
+        // Inspired by https://github.com/marketplace/actions/close-issue
+        // Add closing message
+        await octokit.issues.createComment({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            body: "Good luck with your project!\n" +
+            "If you would like to search for more potential teammates, " +
+            "please create a new issue with the template title:\n" +
+            "\"Teammate request: your-kth-email@kth.se\"."
+        });
 
-            // Closes the issue
-            await octokit.issues.update({
-                owner: issue.owner,
-                repo: issue.repo,
-                issue_number: issue.number,
-                state: "closed"
-            });
+        // Closes the issue
+        await octokit.issues.update({
+            owner: issue.owner,
+            repo: issue.repo,
+            issue_number: issue.number,
+            state: "closed"
+        });
 
-            console.log(`It is working`);
-
-        } else {
-            console.log("wrong title");
-        }
+        console.log(`It is working`);
        
     } catch (error) {
         core.setFailed(error.message);
