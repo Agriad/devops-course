@@ -96,7 +96,7 @@ async function main() {
         
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
-        console.log(studentListBase64);
+        console.log(studentListText);
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
