@@ -68,9 +68,8 @@ async function main() {
             //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
             
             const regex = '[a-z]*@kth';
-            var matches = [];
                         
-            const array = [...markdown.matchAll(regex)];
+            const matches = [...markdown.matchAll(regex)];
 
             console.log("emails from the readme-file");
             console.log(matches);
