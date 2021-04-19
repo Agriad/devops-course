@@ -6063,12 +6063,14 @@ const { Context } = __nccwpck_require__(210);
 
 async function getFile(octokit, owner, repoName, path, ref) {
     return new Promise((resolve, reject) => {
+        resolve(
         octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
             owner: owner,
             repo: repoName,
             path: path,
             ref: ref
-        })
+        })),
+        reject("Error")
     })
 }
 
