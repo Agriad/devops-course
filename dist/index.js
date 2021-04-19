@@ -6122,6 +6122,10 @@ async function main() {
         const repoName = issue.repo;
         const branch = mainBranch;
 
+        console.log(listBranch);
+        console.log(listFile);
+        console.log(mainBranch);
+
         // Get the student list
         let studentListText = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
             owner: owner,
