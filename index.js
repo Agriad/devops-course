@@ -60,9 +60,9 @@ async function main() {
         console.log("specifying git varables");
 
         // Variables required to access files in repo
-        const owner = github.context.payload.repository.owner.login
-        const repoName = "devops-course"
-        const branch = "2021"
+        const owner = issue.owner;
+        const repoName = issue.repo;
+        const branch = mainBranch;
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
