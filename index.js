@@ -8,13 +8,16 @@ const { Context } = require('@actions/github/lib/context');
  * @param  {Object} payload Payload containing the title
  * @return {String}         String containing the requester's email
  */
-function parseTitle(payload) {
+ function parseTitle(payload) {
     const title = payload.issue.title;
 
     if (title.includes("Teammate request:")) {
-        return "a";
+        const splitTitle = title.split(":");
+        let email = splitTitle[1];
+        email = email.slice(1, email.length);
+        return email;
     } else {
-        return "";
+        return null;
     }
 }
 
@@ -36,12 +39,16 @@ async function main() {
             return;
         }
 
-        const parsedTitle = parseTitle(payload);
+        const email = parseTitle(payload);
+
+        if (email != null) {
+            console.log("title contains Teammate request:");
+            console.log(email);
+        } else {
+            console.log("wrong title");
+        }
 
         const octokit = github.getOctokit(githubSecret);
-
-        
-
         
         if (parsedTitle != "") {
             // if title contains "Teammate request" then we should do everything
@@ -74,28 +81,16 @@ async function main() {
             console.log("emails from the readme-file");
             console.log(matches);
 
-
-            // Add closing message
+            // TODO finish this
+            // Comment about the legal teammates
             await octokit.issues.createComment({
                 owner: issue.owner,
                 repo: issue.repo,
                 issue_number: issue.number,
-                body: "Here is a list of legal teammates for you!\n" +
-                "email, email, email ... "
+                body: "PLACEHOLDER"
             });
 
-            // Closes the issue
-            await octokit.issues.update({
-                owner: issue.owner,
-                repo: issue.repo,
-                issue_number: issue.number,
-                state: "closed"
-            });
-
-
-        } else {
-            console.log("wrong title");
-
+            // Inspired by https://github.com/marketplace/actions/close-issue
             // Add closing message
             await octokit.issues.createComment({
                 owner: issue.owner,
@@ -107,9 +102,19 @@ async function main() {
                 "\"Teammate request: your-kth-email@kth.se\"."
             });
 
+            // Closes the issue
+            await octokit.issues.update({
+                owner: issue.owner,
+                repo: issue.repo,
+                issue_number: issue.number,
+                state: "closed"
+            });
+
+            console.log(`It is working`);
+
+        } else {
+            console.log("wrong title");
         }
-
-
        
     } catch (error) {
         core.setFailed(error.message);
