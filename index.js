@@ -3,6 +3,11 @@ const github = require('@actions/github');
 var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
+/**
+ * Creates a nested list to represent the students
+ * @param {string} studentListText A string of students
+ * @returns {Object} A 2D list of students and values
+ */
 function createDataStructure(studentListText) {
     let names = studentListText.split("\n");
     names.pop();

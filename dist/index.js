@@ -6061,6 +6061,11 @@ const github = __nccwpck_require__(134);
 var atob = __nccwpck_require__(547);
 const { Context } = __nccwpck_require__(210);
 
+/**
+ * Creates a nested list to represent the students
+ * @param {string} studentListText A string of students
+ * @returns {Object} A 2D list of students and values
+ */
 function createDataStructure(studentListText) {
     let names = studentListText.split("\n");
     names.pop();
