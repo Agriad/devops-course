@@ -6080,6 +6080,18 @@ function createDataStructure(studentListText) {
     return dataStructure
 }
 
+async function getAllReadme(octokit, owner, repoName, ref) {
+    const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
+
+    projects.forEach(category => {
+        let query = new Promise((resolve, reject) => {
+        resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
+        reject("Error")
+        })
+        query.then(payload => console.log(payload));
+    });
+}
+
 /**
  * Using the GitHub API, sends a GET request for a file
  * @param {Object} octokit octokit to handle the GitHub API
@@ -6192,8 +6204,10 @@ async function main() {
         let dataStructure = createDataStructure(studentListText);
         console.log(dataStructure);
 
-        const files = await getFile(octokit, owner, repoName, "contributions", mainBranch);
-        console.log(files);
+        // Get all READMEs
+        await getAllReadme(octokit, owner, repoName, mainBranch);
+        // const files = await getFile(octokit, owner, repoName, "contributions", mainBranch);
+        // console.log(files);
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
