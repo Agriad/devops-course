@@ -6123,10 +6123,10 @@ async function main() {
         const branch = mainBranch;
 
         // Get the student list
-        let studentListText = await octokit.request('GET /repos/{owner}/{repo}/branches/{branch}', {
+        let studentListText = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
             owner: owner,
             repo: repoName,
-            branch: mainBranch
+            path: listFile
           })
         console.log(studentListText);
 
@@ -6189,7 +6189,7 @@ async function main() {
 // stolen (then modified) from https://github.com/KTH/devops-course/pull/1148/files
 // this function fetches a readme in a specific directory on github
 var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
-    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/{dir}', {
+    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
         owner: owner,
         repo: repo,
         dir: dir,
