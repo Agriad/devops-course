@@ -1,12 +1,16 @@
-name: 'Legal Teammates'
-description: 'Find teammates to work with on the projects in the DD2482 course.'
-inputs:
-  github-token: 
-    description: "Github secret"
-    required: true
-outputs:
-  legal-teammates: # id of output
-    description: 'A comment with a list of legal teammates'
-runs:
-  using: 'node12'
-  main: 'dist/index.js'
+on: 
+  issues:
+    types: [opened, reopened]
+
+jobs:
+  hello_world_job:
+    runs-on: ubuntu-latest
+    name: testing
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Hello world action step
+      id: hello
+      uses: ./
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
