@@ -57,8 +57,18 @@ async function main() {
             // Example directory
             const dir = "contributions/essay/carinawi-urama"
 
-            console.log("accessing readme");
             // Extract The readme file with the feedback from the correct directory
+
+            // get all folders
+            await octokit.request('GET /repos/{owner}/{repoName}/{dirs}', {
+                dirs: 'dirs'
+            })
+
+            console.log("getting all dirs");
+            console.log(dirs);
+            
+
+            console.log("accessing readme");
             var file = await getReadme(octokit,owner,repoName,dir,branch)
             var markdown = atob(file.content) //atob returns a string with the content of the README file
 
@@ -133,5 +143,6 @@ var getReadme = async function(octokit, owner, repo, dir, callingBranch='master'
     })
   
 }
+
 
 main()
