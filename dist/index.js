@@ -6066,7 +6066,10 @@ function createDataStructure(studentListText) {
     
     if (names[names.length - 1].localeCompare("")) {
         names.pop();
+        console.log("pop");
     }
+
+    console.log(names[names.length - 1].charCodeAt(0));
 
     names.sort();
     let dataStructure = [];
