@@ -64,9 +64,6 @@ async function main() {
             await octokit.request('GET /repos/{owner}/{repoName}/{dirs}', {
                 dirs: 'dirs'
             })*/
-
-            console.log("getting all dirs");
-            console.log(dirs);
             
 
             console.log("accessing readme");
