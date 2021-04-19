@@ -6093,7 +6093,8 @@ async function getAllReadme(octokit, owner, repoName, ref) {
 
     let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
     console.log(presentationPayload);
-    
+    let presentationWeek = presentationPayload.name;
+    console.log(presentationWeek);
 }
 
 /**
