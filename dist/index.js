@@ -6061,6 +6061,24 @@ const github = __nccwpck_require__(134);
 var atob = __nccwpck_require__(547);
 const { Context } = __nccwpck_require__(210);
 
+// Inspired from https://github.com/KTH/devops-course/pull/1148/files
+// this function fetches a readme in a specific directory on github
+var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
+    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
+        owner: owner,
+        repo: repo,
+        dir: dir,
+        ref: callingBranch
+    }).then(file =>{ 
+        x = atob(file.data.content)
+        resolve(file.data)
+    }).catch(err => {
+      console.log(err)
+    }) 
+    })
+  
+}
+
 /**
  * Parses the title
  * @param  {Object} payload Payload containing the title
@@ -6127,13 +6145,16 @@ async function main() {
         console.log(mainBranch);
 
         // Get the student list
-        let studentListText = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+        const studentListPayload = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
             owner: owner,
             repo: repoName,
             path: listFile,
             ref: listBranch
-          })
-        console.log(studentListText);
+        })
+        
+        const studentListBase64 = studentListPayload.data.content;
+        const studentListText = atob(studentListBase64);
+        console.log(studentListBase64);
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
@@ -6189,24 +6210,6 @@ async function main() {
     } catch (error) {
         core.setFailed(error.message);
     }   
-}
-
-// stolen (then modified) from https://github.com/KTH/devops-course/pull/1148/files
-// this function fetches a readme in a specific directory on github
-var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
-    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
-        owner: owner,
-        repo: repo,
-        dir: dir,
-        ref: callingBranch
-    }).then(file =>{ 
-        x = atob(file.data.content)
-        resolve(file.data)
-    }).catch(err => {
-      console.log(err)
-    }) 
-    })
-  
 }
 
 main()
