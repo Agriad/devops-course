@@ -6061,6 +6061,17 @@ const github = __nccwpck_require__(134);
 var atob = __nccwpck_require__(547);
 const { Context } = __nccwpck_require__(210);
 
+async function getFile(octokit, owner, repoName, path, ref) {
+    return new Promise((resolve, reject) => {
+        octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+            owner: owner,
+            repo: repoName,
+            path: path,
+            ref: ref
+        })
+    })
+}
+
 // Inspired from https://github.com/KTH/devops-course/pull/1148/files
 // this function fetches a readme in a specific directory on github
 var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
@@ -6140,17 +6151,15 @@ async function main() {
         const repoName = issue.repo;
         const branch = mainBranch;
 
-        console.log(listBranch);
-        console.log(listFile);
-        console.log(mainBranch);
-
         // Get the student list
-        const studentListPayload = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-            owner: owner,
-            repo: repoName,
-            path: listFile,
-            ref: listBranch
-        })
+        // const studentListPayload = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+        //     owner: owner,
+        //     repo: repoName,
+        //     path: listFile,
+        //     ref: listBranch
+        // })
+
+        const studentListPayload = await getFile(octokit, owner, repoName, listFile, listBranch);
         
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
