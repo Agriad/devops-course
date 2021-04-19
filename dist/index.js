@@ -6123,25 +6123,15 @@ async function main() {
             console.log("Content of the README file:");
             console.log(markdown);
 
-            var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
+            //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
             
-            const regex = new RegExp('[a-z]*@kth');
+            const regex = '[a-z]*@kth';
             var matches = [];
-            var match = regex.exec(txt);
-
-            console.log(match);
-            /*
-            while (match != null) {
-                matches.push(match[1]);
-                match = regex.exec(txt);
-            }*/
+                        
+            const array = [...markdown.matchAll(regex)];
 
             console.log("emails from the readme-file");
             console.log(matches);
-
-            
-            //todo: calculate all legal people
-
 
 
             // Add closing message
