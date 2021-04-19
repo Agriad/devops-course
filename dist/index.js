@@ -6162,14 +6162,6 @@ async function main() {
         const repoName = issue.repo;
         const branch = mainBranch;
 
-        // Get the student list
-        // const studentListPayload = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-        //     owner: owner,
-        //     repo: repoName,
-        //     path: listFile,
-        //     ref: listBranch
-        // })
-
         const studentListPayload = await getFile(octokit, owner, repoName, listFile, listBranch);
         
         const studentListBase64 = studentListPayload.data.content;
