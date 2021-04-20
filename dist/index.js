@@ -6233,7 +6233,9 @@ async function main() {
         
 
         var group_member_names = [];
-
+        
+        console.log(filenames);
+        
         for (const outer_list of filenames) {
             for (const cathegory of outer_list) {
 
@@ -6241,7 +6243,7 @@ async function main() {
 
                     
     
-                    group_member_names.push(member_folder.split("-"));
+                    group_member_names.push(...member_folder.split("-"));
                 }
             }
         }
