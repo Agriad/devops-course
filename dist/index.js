@@ -6227,10 +6227,10 @@ async function main() {
         console.log(dataStructure);
 
         // Get all READMEs
-        let readmes = await getAllFileNames(octokit, owner, repoName, mainBranch);
-        console.log(readmes);
+        let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
+        //console.log(readmes);
 
-        var group_member_names = str.split("-");
+        var group_member_names = filenames.split("-");
         
         console.log('individual group members:');
         console.log(group_member_names);
