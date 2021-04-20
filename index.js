@@ -62,7 +62,7 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
     let categoryGroups = categoryPayload.data;
 
-    for (let index = 0; index < categoryGroups.length; index++) {
+    for (let index = 1; index < categoryGroups.length; index++) {
         let groupPayload = categoryGroups[index];
         let groupName = groupPayload.name;
 
