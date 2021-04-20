@@ -48,7 +48,7 @@ async function getAllReadme(octokit, owner, repoName, ref) {
         console.log("contributions/" + category);
     });
 
-    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[4], ref);
+    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/open-source", ref);
     let categoryGroups = categoryPayload.data;
 
     for (let j = 1; j < categoryGroups.length; j++) {
