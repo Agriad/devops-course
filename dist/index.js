@@ -6080,42 +6080,52 @@ function createDataStructure(studentListText) {
     return dataStructure
 }
 
-function getAllReadme(octokit, owner, repoName, ref) {
+async function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
     let textArray = [];
 
-    projects.forEach(category => {
-        let query = new Promise((resolve, reject) => {
-        resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
-        reject("Error")
-        });
+    // projects.forEach(category => {
+    //     let query = new Promise((resolve, reject) => {
+    //     resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
+    //     reject("Error")
+    //     });
 
-        query.then(
-            categoryPayload => {
-                let categoryArray = [];
+    //     query.then(
+    //         categoryPayload => {
+    //             let categoryArray = [];
 
-                for (let index = 1; index < categoryPayload.length; index++) {
-                    let name = categoryPayload[index];
+    //             for (let index = 1; index < categoryPayload.length; index++) {
+    //                 let name = categoryPayload[index];
 
-                    let readmePromise = new Promise((resolve, reject) => {
-                        resolve(getReadme(octokit, owner, repoName, "contributions/" + category + "/" + name, ref)),
-                        reject("Error")
-                    });
+    //                 let readmePromise = new Promise((resolve, reject) => {
+    //                     resolve(getReadme(octokit, owner, repoName, "contributions/" + category + "/" + name, ref)),
+    //                     reject("Error")
+    //                 });
 
-                    readmePromise.then(
-                        readmePayload => {
-                            let readmeContentBase64 = readmePayload.content;
-                            let readmeContent = atob(readmeContentBase64);
-                            console.log(readmeContent);
-                            categoryArray.push(readmeContent);
-                        }
-                    )
-                }
+    //                 readmePromise.then(
+    //                     readmePayload => {
+    //                         let readmeContentBase64 = readmePayload.content;
+    //                         let readmeContent = atob(readmeContentBase64);
+    //                         console.log(readmeContent);
+    //                         categoryArray.push(readmeContent);
+    //                     }
+    //                 )
+    //             }
 
-                textArray.push([category ,categoryArray]);
-            }
-        );
-    });
+    //             textArray.push([category ,categoryArray]);
+    //         }
+    //     );
+    // });
+
+    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
+    let categoryGroups = categoryPayload.data;
+    let groupPayload = categoryGroups[1];
+    let groupName = groupPayload.name;
+
+    let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
+    let readmeContentBase64 = readmePayload.content;
+    let readmeContent = atob(readmeContentBase64);
+    console.log(readmeContent);
 
     // let presentationTextArray = [];
     // let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
