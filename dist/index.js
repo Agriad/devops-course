@@ -6117,7 +6117,16 @@ function createTeammateComment(dataStructure) {
     return finalComment;
 }
 
-function updateStudents(legalStudentList, fileNames) {
+function updateStudents(legalStudentList, fileNames, ownName) {
+    for (let index = 0; index < legalStudentList.length; index++) {
+        let dataStudent = legalStudentList[index];
+        const studentName = dataStudent[0];
+
+        if (studentName.localeCompare(ownName) == 0) {
+            dataStudent[1] = 5;
+        }
+    }
+
     fileNames.forEach(categoryArray => {
         let categoryName = categoryArray[0];
 
