@@ -6124,22 +6124,11 @@ function createTeammateComment(dataStructure, ownName) {
 }
 
 function updateStudents(legalStudentList, fileNames, ownName) {
-    for (let index = 0; index < legalStudentList.length; index++) {
-        let dataStudent = legalStudentList[index];
-        const studentName = dataStudent[0];
-
-        if (studentName.localeCompare(ownName) == 0) {
-            studentCategories.push("myself");
-        }
-    }
-
     fileNames.forEach(categoryArray => {
         let categoryName = categoryArray[0];
 
         categoryArray[1].forEach(groups => {
             let groupNames = groups.split("-");
-
-
 
             groupNames.forEach(name => {
 
