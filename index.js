@@ -173,8 +173,15 @@ async function main() {
         //console.log(readmes);
 
         
-        console.log(filenames);
+        //console.log(filenames);
 
+        for (const cathegory of filenames) {
+            for (const member_folder of cathegory) {
+                console.log(member_folder);
+            }
+        }
+
+          
         var group_member_names = [];
 
         //for(const element of filenames){
