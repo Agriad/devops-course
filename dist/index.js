@@ -6086,9 +6086,18 @@ function createDataStructure(studentListText) {
  * @param {Object} dataStructure The student list data structure
  * @returns {string} The comment for the legal teammates
  */
-function createTeammateComment(dataStructure) {
+function createTeammateComment(dataStructure, ownName) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
     let finalComment = "Legal Teammates:\n";
+    let ownCategories = [];
+
+    dataStructure.forEach(studentArray => {
+        const studentName = studentArray[0];
+
+        if (studentName.localeCompare(ownName) == 0) {
+            ownCategories = studentArray[2];
+        }
+    });
 
     projects.forEach(category => {
         const text = category + ": "
@@ -6097,17 +6106,14 @@ function createTeammateComment(dataStructure) {
         dataStructure.forEach(studentArray => {
             const studentName = studentArray[0];
             const studentCategories = studentArray[2];
-            let studentCategoryBoolean = true;
 
             for (let i = 0; i < studentCategories.length; i++) {
-                if (studentCategories[i].localeCompare(category) == 0) {
-                    studentCategoryBoolean = false;
+                if (!ownCategories.includes(studentCategories[i]) == 0) {
+                    if ((studentArray[1] < 2) && (studentCategories.length < 4) && !studentName.includes(ownName)) {
+                        const studentText = studentName + "@kth.se, ";
+                        finalComment += studentText;
+                    }
                 }
-            }
-
-            if (studentCategoryBoolean && (studentArray[1] < 4)) {
-                const studentText = studentName + "@kth.se, ";
-                finalComment += studentText;
             }
         });
 
@@ -6123,7 +6129,7 @@ function updateStudents(legalStudentList, fileNames, ownName) {
         const studentName = dataStudent[0];
 
         if (studentName.localeCompare(ownName) == 0) {
-            dataStudent[1] = 5;
+            studentCategories.push("myself");
         }
     }
 
@@ -6133,16 +6139,30 @@ function updateStudents(legalStudentList, fileNames, ownName) {
         categoryArray[1].forEach(groups => {
             let groupNames = groups.split("-");
 
-            groupNames.forEach(name => {
-                
-                for (let index = 0; index < legalStudentList.length; index++) {
-                    let dataStudent = legalStudentList[index];
-                    let studentCategories = dataStudent[2];
-                    const studentName = dataStudent[0];
 
-                    if (studentName.localeCompare(name) == 0) {
-                        studentCategories.push(categoryName);
-                        dataStudent[1] += 1;
+
+            groupNames.forEach(name => {
+
+                if (groupNames.includes(ownName)) {
+                    for (let index = 0; index < legalStudentList.length; index++) {
+                        let dataStudent = legalStudentList[index];
+                        let studentCategories = dataStudent[2];
+                        const studentName = dataStudent[0];
+    
+                        if (studentName.includes(name)) {
+                            studentCategories.push(categoryName);
+                            dataStudent[1] += 1;   
+                        }
+                    }
+                } else {
+                    for (let index = 0; index < legalStudentList.length; index++) {
+                        let dataStudent = legalStudentList[index];
+                        let studentCategories = dataStudent[2];
+                        const studentName = dataStudent[0];
+    
+                        if (studentName.localeCompare(name) == 0) {
+                            studentCategories.push(categoryName);
+                        }
                     }
                 }
             });
@@ -6307,7 +6327,7 @@ async function main() {
 
         let updatedLegalStudentList = updateStudents(dataStructure, filenames, email);
 
-        const teammateComment = createTeammateComment(updatedLegalStudentList);
+        const teammateComment = createTeammateComment(updatedLegalStudentList, email);
         console.log(teammateComment);
 
         // TODO finish this
