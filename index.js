@@ -24,6 +24,7 @@ function createDataStructure(studentListText) {
 
 async function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
+    let textArray = [];
 
     // projects.forEach(category => {
     //     let query = new Promise((resolve, reject) => {
@@ -33,29 +34,37 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     //     query.then(payload => console.log(payload));
     // });
 
-    let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
-    // console.log(presentationPayload);
-    let presentationData = presentationPayload.data;
-
-    for (let index = 1; index < presentationData.length; index++) {
-        let weekNamePayload = presentationData[index];
-        let weekName = weekNamePayload.name;
-        let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
-        // console.log(presentationWeekPayload);
-
-        let presentationGroups = presentationWeekPayload.data;
-
-        for (let index = 1; index < presentationGroups.length; index++) {
-            let groupPayload = presentationGroups[index];
-            let groupName = groupPayload.name;
-            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
-            // console.log(readmePayload);
-
-            let readmeContentBase64 = readmePayload.content;
-            let readmeContent = atob(readmeContentBase64);
-            console.log(readmeContent);
-        }
+    for (let index = 0; index < projects.length; index++) {
+        let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + category, ref);
+        console.log(categoryPayload);
     }
+
+    // let presentationTextArray = [];
+    // let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
+
+    // let presentationData = presentationPayload.data;
+
+    // for (let index = 1; index < presentationData.length; index++) {
+    //     let weekNamePayload = presentationData[index];
+    //     let weekName = weekNamePayload.name;
+    //     let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
+
+    //     let presentationGroups = presentationWeekPayload.data;
+
+    //     for (let index = 1; index < presentationGroups.length; index++) {
+    //         let groupPayload = presentationGroups[index];
+    //         let groupName = groupPayload.name;
+    //         let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
+
+    //         let readmeContentBase64 = readmePayload.content;
+    //         let readmeContent = atob(readmeContentBase64);
+    //         presentationTextArray.push(readmeContent);
+    //     }
+    // }
+
+    // textArray.push(presentationTextArray);
+
+    // return textArray;
 }
 
 /**
