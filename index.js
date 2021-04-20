@@ -23,6 +23,64 @@ function createDataStructure(studentListText) {
 }
 
 /**
+ * Gets all the READMEs from the main branch of the repository. Requires the name of the README to be README not a typo like REAMDE.
+ * @param {Object} octokit octokit to handle the GitHub API
+ * @param {string} owner owner of the repository
+ * @param {string} repoName repository name
+ * @param {string} ref the branch where the file is located
+ * @returns A 2D list of READMEs and which categories they are in
+ */
+async function getAllReadme(octokit, owner, repoName, ref) {
+    const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
+    let textArray = [];
+
+    for (let i = 0; i < projects.length; i++) {
+        let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[i], ref);
+        let categoryGroups = categoryPayload.data;
+        let categoryArray = [];
+
+        for (let j = 1; j < categoryGroups.length; j++) {
+            let groupPayload = categoryGroups[j];
+            let groupName = groupPayload.name;
+
+            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + projects[i] + "/" + groupName, ref);
+            let readmeContentBase64 = readmePayload.content;
+            let readmeContent = atob(readmeContentBase64);
+            categoryArray.push(readmeContent);
+        }
+        
+        textArray.push([projects[i], categoryArray]);
+    }
+
+    let presentationTextArray = [];
+    let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
+
+    let presentationData = presentationPayload.data;
+
+    for (let i = 1; i < presentationData.length; i++) {
+        let weekNamePayload = presentationData[i];
+        let weekName = weekNamePayload.name;
+        let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
+
+        let presentationGroups = presentationWeekPayload.data;
+
+        for (let j = 1; j < presentationGroups.length; j++) {
+            let groupPayload = presentationGroups[j];
+            let groupName = groupPayload.name;
+            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
+
+            let readmeContentBase64 = readmePayload.content;
+            let readmeContent = atob(readmeContentBase64);
+            presentationTextArray.push(readmeContent);
+        }
+    }
+
+    textArray.push(["presentation", presentationTextArray]);
+
+    return textArray;
+}
+
+/**
  * Using the GitHub API, sends a GET request for a file
  * @param {Object} octokit octokit to handle the GitHub API
  * @param {string} owner owner of the repository
@@ -128,11 +186,14 @@ async function main() {
         
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
-        console.log(studentListText);
 
         // Make a data structure for the students
         let dataStructure = createDataStructure(studentListText);
         console.log(dataStructure);
+
+        // Get all READMEs
+        let readmes = await getAllReadme(octokit, owner, repoName, mainBranch);
+        console.log(readmes);
 
         // Example directory
         const dir = "contributions/essay/carinawi-urama"
