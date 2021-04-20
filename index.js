@@ -179,9 +179,9 @@ async function main() {
         console.log(filenames);
         
         for (const outer_list of filenames) {
-            for (const cathegory of outer_list) {
+            for (const cathegory_and_names of outer_list) {
 
-                for (const member_folder of cathegory) {
+                for (const member_folder of cathegory_and_names[1]) {
 
                     
     
