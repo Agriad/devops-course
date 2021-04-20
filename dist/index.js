@@ -6117,6 +6117,35 @@ function createTeammateComment(dataStructure) {
     return finalComment;
 }
 
+function updateStudents(legalStudentList, fileNames) {
+    fileNames.forEach(categoryArray => {
+        let categoryName = categoryArray[0];
+
+        categoryArray[1].forEach(groups => {
+            let groupNames = groups.split("-");
+
+            groupNames.forEach(name => {
+                
+                for (let index = 0; index < legalStudentList.length; index++) {
+                    let dataStudent = legalStudentList[index];
+                    let studentCategories = dataStudent[2];
+                    let studentProposal = dataStudent[1];
+                    const studentName = dataStudent[0];
+
+                    if (studentName.localeCompare(name) == 0) {
+                        studentCategories.push(categoryName);
+                        studentProposal += 1;
+                    }
+                }
+            });
+        });
+    });
+
+    console.log(legalStudentList);
+
+    return legalStudentList;
+}
+
 /**
  * Gets all the READMEs from the main branch of the repository. Requires the name of the README to be README not a typo like REAMDE.
  * @param {Object} octokit octokit to handle the GitHub API
@@ -6263,23 +6292,11 @@ async function main() {
         let dataStructure = createDataStructure(studentListText);
         console.log(dataStructure);
 
-        // Get all READMEs
+        // Get all file names
         let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
         //console.log(readmes);
 
-        
-
-        var group_member_names = [];
-        
-        console.log(filenames);
-
-        for (const cathegory_and_names of filenames) {
-
-            for (const member_folder of cathegory_and_names[1]) {
-
-                group_member_names.push(...member_folder.split("-"));
-            }
-        }
+        let updatedLegalStudentList = updateStudents(dataStructure, filenames);
 
         console.log(group_member_names);
 
