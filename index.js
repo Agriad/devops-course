@@ -194,28 +194,26 @@ async function main() {
         // Get all READMEs
         let readmes = await getAllReadme(octokit, owner, repoName, mainBranch);
         console.log(readmes);
-        // const files = await getFile(octokit, owner, repoName, "contributions", mainBranch);
-        // console.log(files);
 
         // Example directory
-        // const dir = "contributions/essay/carinawi-urama"
+        const dir = "contributions/essay/carinawi-urama"
 
-        // console.log("accessing readme");
+        console.log("accessing readme");
         // Extract The readme file with the feedback from the correct directory
-        // var file = await getReadme(octokit,owner,repoName,dir,branch)
-        // var markdown = atob(file.content) //atob returns a string with the content of the README file
+        var file = await getReadme(octokit,owner,repoName,dir,branch)
+        var markdown = atob(file.content) //atob returns a string with the content of the README file
 
-        // console.log("Content of the README file:");
-        // console.log(markdown);
+        console.log("Content of the README file:");
+        console.log(markdown);
 
         //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
         
-        // const regex = '[a-z]*@kth';
+        const regex = '[a-z]*@kth';
                     
-        // const matches = [...markdown.matchAll(regex)];
+        const matches = [...markdown.matchAll(regex)];
 
-        // console.log("emails from the readme-file");
-        // console.log(matches);
+        console.log("emails from the readme-file");
+        console.log(matches);
 
         // TODO finish this
         // Comment about the legal teammates
