@@ -6,7 +6,8 @@ const { Context } = require('@actions/github/lib/context');
 /**
  * Creates a nested list to represent the students
  * @param {string} studentListText A string of students
- * @returns {Object} A 2D list of students and values
+ * @returns {Object} A 3D list of students and values 
+ * [[name 1, counter 1, [list of categories]], [name 2, counter 1, [list of categories]]]
  */
 function createDataStructure(studentListText) {
     let names = studentListText.split("\n");
@@ -15,7 +16,7 @@ function createDataStructure(studentListText) {
     let dataStructure = [];
 
     names.forEach(name => {
-        let data = [name + "@kth.se", 0];
+        let data = [name, 0, []];
         dataStructure.push(data)
     });
 
