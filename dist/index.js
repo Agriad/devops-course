@@ -6230,7 +6230,12 @@ async function main() {
         let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
         //console.log(readmes);
 
-        var group_member_names = filenames.split("-");
+        var group_member_names = [];
+
+        for(const element of filenames){
+            group_member_names.push(element.split("-"));
+        
+        }
         
         console.log('individual group members:');
         console.log(group_member_names);
