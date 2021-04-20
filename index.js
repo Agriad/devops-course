@@ -181,13 +181,14 @@ async function main() {
 
                 for (const member_folder of cathegory) {
 
-                    console.log(member_folder);
+                    
     
                     group_member_names.push(member_folder.split("-"));
                 }
             }
         }
 
+        console.log(group_member_names);
           
 
         
