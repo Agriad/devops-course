@@ -28,7 +28,7 @@ function createDataStructure(studentListText) {
  * @param {string} owner owner of the repository
  * @param {string} repoName repository name
  * @param {string} ref the branch where the file is located
- * @returns A 2D list of READMEs and which categories they are in
+ * @returns A 3D list of READMEs and which categories they are in. [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
  */
 async function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
@@ -42,11 +42,7 @@ async function getAllReadme(octokit, owner, repoName, ref) {
         for (let j = 1; j < categoryGroups.length; j++) {
             let groupPayload = categoryGroups[j];
             let groupName = groupPayload.name;
-
-            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + projects[i] + "/" + groupName, ref);
-            let readmeContentBase64 = readmePayload.content;
-            let readmeContent = atob(readmeContentBase64);
-            categoryArray.push(readmeContent);
+            categoryArray.push(groupName);
         }
         
         textArray.push([projects[i], categoryArray]);
@@ -67,11 +63,8 @@ async function getAllReadme(octokit, owner, repoName, ref) {
         for (let j = 1; j < presentationGroups.length; j++) {
             let groupPayload = presentationGroups[j];
             let groupName = groupPayload.name;
-            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
-
-            let readmeContentBase64 = readmePayload.content;
-            let readmeContent = atob(readmeContentBase64);
-            presentationTextArray.push(readmeContent);
+            
+            presentationTextArray.push(groupName);
         }
     }
 
