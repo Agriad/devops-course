@@ -6093,7 +6093,6 @@ function getAllReadme(octokit, owner, repoName, ref) {
         query.then(
             categoryPayload => {
                 let categoryArray = [];
-                console.log(categoryPayload);
 
                 for (let index = 1; index < categoryPayload.length; index++) {
                     let name = categoryPayload[index];
