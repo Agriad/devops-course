@@ -6099,11 +6099,14 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     //     }
     // }
 
+    let contributions = await getFile(octokit, owner, repoName, "contributions", ref);
+    console.log(contributions);
+
     projects.forEach(category => {
         console.log("contributions/" + category);
     });
 
-    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[2], ref);
+    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[4], ref);
     let categoryGroups = categoryPayload.data;
 
     for (let j = 1; j < categoryGroups.length; j++) {
