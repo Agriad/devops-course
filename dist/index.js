@@ -6081,6 +6081,37 @@ function createDataStructure(studentListText) {
     return dataStructure
 }
 
+function createTeammateComment(dataStructure) {
+    const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
+    let finalComment = "Legal Teammates:\n";
+
+    projects.forEach(category => {
+        const text = category + ": "
+        finalComment += text;
+
+        dataStructure.forEach(studentArray => {
+            const studentName = studentArray[0];
+            const studentCategories = studentArray[2];
+            let studentCategoryBoolean = true;
+
+            for (let i = 0; i < studentCategories.length; i++) {
+                if (studentCategories[i].localeCompare(category)) {
+                    studentCategoryBoolean = false;
+                }
+            }
+
+            if (studentCategoryBoolean && (studentArray[1] < 4)) {
+                const studentText = studentName + "@kth.se, ";
+                finalComment += studentText;
+            }
+        });
+
+        finalComment += "\n";
+    });
+
+    return finalComment;
+}
+
 /**
  * Gets all the READMEs from the main branch of the repository. Requires the name of the README to be README not a typo like REAMDE.
  * @param {Object} octokit octokit to handle the GitHub API
@@ -6242,23 +6273,23 @@ async function main() {
 
                 
 
-                group_member_names.push(...member_folder.split("-"));
-            }
-        }
+        "course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"
 
-        console.log(group_member_names);
-          
+        const placeholderData = [
+            ["john", 4, ["course-automation", "demo", "essay", "executable-tutorial"]],
+            ["jane", 3, ["feedback", "open-source", "presentation"]],
+            ["zoe", 0, []]
+        ];
 
-        
-        
-        
+        const teammateComment = createTeammateComment(placeholderData);
+
         // TODO finish this
         // Comment about the legal teammates
         await octokit.issues.createComment({
             owner: issue.owner,
             repo: issue.repo,
             issue_number: issue.number,
-            body: "PLACEHOLDER"
+            body: teammateComment
         });
 
         // Inspired by https://github.com/marketplace/actions/close-issue
