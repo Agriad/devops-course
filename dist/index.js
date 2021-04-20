@@ -6241,7 +6241,8 @@ async function getFile(octokit, owner, repoName, path, ref) {
         const splitTitle = title.split(":");
         let email = splitTitle[1];
         email = email.slice(1, email.length);
-        return email;
+        let nameList = email.split("@");
+        return nameList[0];
     } else {
         return null;
     }
@@ -6304,7 +6305,7 @@ async function main() {
         let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
         //console.log(readmes);
 
-        let updatedLegalStudentList = updateStudents(dataStructure, filenames);
+        let updatedLegalStudentList = updateStudents(dataStructure, filenames, email);
 
         const teammateComment = createTeammateComment(updatedLegalStudentList);
         console.log(teammateComment);
