@@ -6297,13 +6297,7 @@ async function main() {
 
         let updatedLegalStudentList = updateStudents(dataStructure, filenames);
 
-        const placeholderData = [
-            ["john", 4, ["course-automation", "demo", "essay", "executable-tutorial"]],
-            ["jane", 3, ["feedback", "open-source", "presentation"]],
-            ["zoe", 0, []]
-        ];
-
-        const teammateComment = createTeammateComment(placeholderData);
+        const teammateComment = createTeammateComment(updatedLegalStudentList);
         console.log(teammateComment);
 
         // TODO finish this
