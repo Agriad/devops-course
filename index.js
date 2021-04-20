@@ -4,7 +4,7 @@ var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
 /**
- * Creates a nested list to represent the students
+ * Creates a nested list to represent the students.
  * @param {string} studentListText A string of students
  * @returns {Object} A 3D list of students and values 
  * [[name 1, counter 1, [list of categories]], [name 2, counter 1, [list of categories]]]
@@ -23,6 +23,11 @@ function createDataStructure(studentListText) {
     return dataStructure
 }
 
+/**
+ * Creates a text for the legal teammates comment.
+ * @param {Object} dataStructure The student list data structure
+ * @returns {string} The comment for the legal teammates
+ */
 function createTeammateComment(dataStructure) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
     let finalComment = "Legal Teammates:\n";
@@ -37,7 +42,7 @@ function createTeammateComment(dataStructure) {
             let studentCategoryBoolean = true;
 
             for (let i = 0; i < studentCategories.length; i++) {
-                if (studentCategories[i].localeCompare(category)) {
+                if (studentCategories[i].localeCompare(category) == 0) {
                     studentCategoryBoolean = false;
                 }
             }
@@ -60,7 +65,8 @@ function createTeammateComment(dataStructure) {
  * @param {string} owner owner of the repository
  * @param {string} repoName repository name
  * @param {string} ref the branch where the file is located
- * @returns A 3D list of READMEs and which categories they are in. [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
+ * @returns {Object} A 3D list of READMEs and which categories they are in. 
+ * [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
  */
 async function getAllFileNames(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
@@ -106,7 +112,7 @@ async function getAllFileNames(octokit, owner, repoName, ref) {
 }
 
 /**
- * Using the GitHub API, sends a GET request for a file
+ * Using the GitHub API, sends a GET request for a file.
  * @param {Object} octokit octokit to handle the GitHub API
  * @param {string} owner owner of the repository
  * @param {string} repoName repository name
@@ -147,7 +153,7 @@ async function getFile(octokit, owner, repoName, path, ref) {
 }
 
 /**
- * The main function for finding legal teammates
+ * The main function for finding legal teammates.
  */
 async function main() {
     try {
@@ -226,6 +232,7 @@ async function main() {
         ];
 
         const teammateComment = createTeammateComment(placeholderData);
+        console.log(teammateComment);
 
         // TODO finish this
         // Comment about the legal teammates
