@@ -6080,6 +6080,14 @@ function createDataStructure(studentListText) {
     return dataStructure
 }
 
+/**
+ * Gets all the READMEs from the main branch of the repository. Requires the name of the README to be README not a typo like REAMDE.
+ * @param {Object} octokit octokit to handle the GitHub API
+ * @param {string} owner owner of the repository
+ * @param {string} repoName repository name
+ * @param {string} ref the branch where the file is located
+ * @returns A 2D list of READMEs and which categories they are in
+ */
 async function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
     let textArray = [];
@@ -6096,7 +6104,6 @@ async function getAllReadme(octokit, owner, repoName, ref) {
             let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + projects[i] + "/" + groupName, ref);
             let readmeContentBase64 = readmePayload.content;
             let readmeContent = atob(readmeContentBase64);
-            console.log(readmeContent);
             categoryArray.push(readmeContent);
         }
         
@@ -6243,7 +6250,8 @@ async function main() {
         console.log(dataStructure);
 
         // Get all READMEs
-        await getAllReadme(octokit, owner, repoName, mainBranch);
+        let readmes = await getAllReadme(octokit, owner, repoName, mainBranch);
+        console.log(readmes);
         // const files = await getFile(octokit, owner, repoName, "contributions", mainBranch);
         // console.log(files);
 
