@@ -61,13 +61,16 @@ async function getAllReadme(octokit, owner, repoName, ref) {
 
     let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
     let categoryGroups = categoryPayload.data;
-    let groupPayload = categoryGroups[1];
-    let groupName = groupPayload.name;
 
-    let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
-    let readmeContentBase64 = readmePayload.content;
-    let readmeContent = atob(readmeContentBase64);
-    console.log(readmeContent);
+    for (let index = 0; index < categoryGroups.length; index++) {
+        let groupPayload = categoryGroups[index];
+        let groupName = groupPayload.name;
+
+        let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
+        let readmeContentBase64 = readmePayload.content;
+        let readmeContent = atob(readmeContentBase64);
+        console.log(readmeContent);
+    }
 
     // let presentationTextArray = [];
     // let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
