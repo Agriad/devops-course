@@ -22,22 +22,20 @@ function createDataStructure(studentListText) {
     return dataStructure
 }
 
-async function getAllReadme(octokit, owner, repoName, ref) {
+function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
     let textArray = [];
 
-    // projects.forEach(category => {
-    //     let query = new Promise((resolve, reject) => {
-    //     resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
-    //     reject("Error")
-    //     })
-    //     query.then(payload => console.log(payload));
-    // });
-
-    for (let index = 0; index < projects.length; index++) {
-        let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + category, ref);
-        console.log(categoryPayload);
-    }
+    projects.forEach(category => {
+        let query = new Promise((resolve, reject) => {
+        resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
+        reject("Error")
+        })
+        query.then(
+            categoryPayload => {
+                console.log(categoryPayload);
+            });
+    });
 
     // let presentationTextArray = [];
     // let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
