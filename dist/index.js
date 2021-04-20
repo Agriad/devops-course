@@ -6084,41 +6084,22 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
     let textArray = [];
 
-    // projects.forEach(category => {
-    //     let query = new Promise((resolve, reject) => {
-    //     resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
-    //     reject("Error")
-    //     });
+    // for (let i = 0; i < projects.length; i++) {
+    //     let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[i], ref);
+    //     let categoryGroups = categoryPayload.data;
 
-    //     query.then(
-    //         categoryPayload => {
-    //             let categoryArray = [];
+    //     for (let j = 1; j < categoryGroups.length; j++) {
+    //         let groupPayload = categoryGroups[j];
+    //         let groupName = groupPayload.name;
 
-    //             for (let index = 1; index < categoryPayload.length; index++) {
-    //                 let name = categoryPayload[index];
+    //         let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
+    //         let readmeContentBase64 = readmePayload.content;
+    //         let readmeContent = atob(readmeContentBase64);
+    //         console.log(readmeContent);
+    //     }
+    // }
 
-    //                 let readmePromise = new Promise((resolve, reject) => {
-    //                     resolve(getReadme(octokit, owner, repoName, "contributions/" + category + "/" + name, ref)),
-    //                     reject("Error")
-    //                 });
-
-    //                 readmePromise.then(
-    //                     readmePayload => {
-    //                         let readmeContentBase64 = readmePayload.content;
-    //                         let readmeContent = atob(readmeContentBase64);
-    //                         console.log(readmeContent);
-    //                         categoryArray.push(readmeContent);
-    //                     }
-    //                 )
-    //             }
-
-    //             textArray.push([category ,categoryArray]);
-    //         }
-    //     );
-    // });
-
-    for (let i = 0; i < projects.length; i++) {
-        let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[i], ref);
+    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[0], ref);
         let categoryGroups = categoryPayload.data;
 
         for (let j = 1; j < categoryGroups.length; j++) {
@@ -6130,7 +6111,6 @@ async function getAllReadme(octokit, owner, repoName, ref) {
             let readmeContent = atob(readmeContentBase64);
             console.log(readmeContent);
         }
-    }
 
     // let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
     // let categoryGroups = categoryPayload.data;
