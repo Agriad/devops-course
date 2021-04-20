@@ -31,7 +31,7 @@ function createDataStructure(studentListText) {
  * @param {string} ref the branch where the file is located
  * @returns A 3D list of READMEs and which categories they are in. [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
  */
-async function getAllReadme(octokit, owner, repoName, ref) {
+async function getAllFileNames(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
     let textArray = [];
 
@@ -96,23 +96,6 @@ async function getFile(octokit, owner, repoName, path, ref) {
     })
 }
 
-// Inspired from https://github.com/KTH/devops-course/pull/1148/files
-// this function fetches a readme in a specific directory on github
-var getReadme = async function(octokit, owner, repo, dir, callingBranch='master') {
-    return new Promise((resolve,reject) => {octokit.request('GET /repos/{owner}/{repo}/readme/{dir}', {
-        owner: owner,
-        repo: repo,
-        dir: dir,
-        ref: callingBranch
-    }).then(file =>{ 
-        x = atob(file.data.content)
-        resolve(file.data)
-    }).catch(err => {
-      console.log(err)
-    }) 
-    })
-  
-}
 
 /**
  * Parses the title
@@ -186,29 +169,14 @@ async function main() {
         console.log(dataStructure);
 
         // Get all READMEs
-        let readmes = await getAllReadme(octokit, owner, repoName, mainBranch);
+        let readmes = await getAllFileNames(octokit, owner, repoName, mainBranch);
         console.log(readmes);
 
-        // Example directory
-        const dir = "contributions/essay/carinawi-urama"
-
-        console.log("accessing readme");
-        // Extract The readme file with the feedback from the correct directory
-        var file = await getReadme(octokit,owner,repoName,dir,branch)
-        var markdown = atob(file.content) //atob returns a string with the content of the README file
-
-        console.log("Content of the README file:");
-        console.log(markdown);
-
-        //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
+        var group_member_names = str.split("-");
         
-        const regex = '[a-z]*@kth';
-                    
-        const matches = [...markdown.matchAll(regex)];
-
-        console.log("emails from the readme-file");
-        console.log(matches);
-
+        console.log('individual group members:');
+        console.log(group_member_names);
+        
         // TODO finish this
         // Comment about the legal teammates
         await octokit.issues.createComment({
