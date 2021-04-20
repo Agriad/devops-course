@@ -4,7 +4,7 @@ var atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
 /**
- * Creates a nested list to represent the students
+ * Creates a nested list to represent the students.
  * @param {string} studentListText A string of students
  * @returns {Object} A 3D list of students and values 
  * [[name 1, counter 1, [list of categories]], [name 2, counter 1, [list of categories]]]
@@ -24,12 +24,49 @@ function createDataStructure(studentListText) {
 }
 
 /**
+ * Creates a text for the legal teammates comment.
+ * @param {Object} dataStructure The student list data structure
+ * @returns {string} The comment for the legal teammates
+ */
+function createTeammateComment(dataStructure) {
+    const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
+    let finalComment = "Legal Teammates:\n";
+
+    projects.forEach(category => {
+        const text = category + ": "
+        finalComment += text;
+
+        dataStructure.forEach(studentArray => {
+            const studentName = studentArray[0];
+            const studentCategories = studentArray[2];
+            let studentCategoryBoolean = true;
+
+            for (let i = 0; i < studentCategories.length; i++) {
+                if (studentCategories[i].localeCompare(category) == 0) {
+                    studentCategoryBoolean = false;
+                }
+            }
+
+            if (studentCategoryBoolean && (studentArray[1] < 4)) {
+                const studentText = studentName + "@kth.se, ";
+                finalComment += studentText;
+            }
+        });
+
+        finalComment += "\n";
+    });
+
+    return finalComment;
+}
+
+/**
  * Gets all the READMEs from the main branch of the repository. Requires the name of the README to be README not a typo like REAMDE.
  * @param {Object} octokit octokit to handle the GitHub API
  * @param {string} owner owner of the repository
  * @param {string} repoName repository name
  * @param {string} ref the branch where the file is located
- * @returns A 3D list of READMEs and which categories they are in. [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
+ * @returns {Object} A 3D list of READMEs and which categories they are in. 
+ * [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
  */
 async function getAllFileNames(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
@@ -75,7 +112,7 @@ async function getAllFileNames(octokit, owner, repoName, ref) {
 }
 
 /**
- * Using the GitHub API, sends a GET request for a file
+ * Using the GitHub API, sends a GET request for a file.
  * @param {Object} octokit octokit to handle the GitHub API
  * @param {string} owner owner of the repository
  * @param {string} repoName repository name
@@ -116,7 +153,7 @@ async function getFile(octokit, owner, repoName, path, ref) {
 }
 
 /**
- * The main function for finding legal teammates
+ * The main function for finding legal teammates.
  */
 async function main() {
     try {
@@ -182,25 +219,28 @@ async function main() {
 
             for (const member_folder of cathegory_and_names[1]) {
 
-                
-
                 group_member_names.push(...member_folder.split("-"));
             }
         }
 
         console.log(group_member_names);
-          
 
-        
-        
-        
+        const placeholderData = [
+            ["john", 4, ["course-automation", "demo", "essay", "executable-tutorial"]],
+            ["jane", 3, ["feedback", "open-source", "presentation"]],
+            ["zoe", 0, []]
+        ];
+
+        const teammateComment = createTeammateComment(placeholderData);
+        console.log(teammateComment);
+
         // TODO finish this
         // Comment about the legal teammates
         await octokit.issues.createComment({
             owner: issue.owner,
             repo: issue.repo,
             issue_number: issue.number,
-            body: "PLACEHOLDER"
+            body: teammateComment
         });
 
         // Inspired by https://github.com/marketplace/actions/close-issue
