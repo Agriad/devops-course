@@ -6129,12 +6129,11 @@ function updateStudents(legalStudentList, fileNames) {
                 for (let index = 0; index < legalStudentList.length; index++) {
                     let dataStudent = legalStudentList[index];
                     let studentCategories = dataStudent[2];
-                    let studentProposal = dataStudent[1];
                     const studentName = dataStudent[0];
 
                     if (studentName.localeCompare(name) == 0) {
                         studentCategories.push(categoryName);
-                        studentProposal += 1;
+                        dataStudent[1] += 1;
                     }
                 }
             });
@@ -6297,8 +6296,6 @@ async function main() {
         //console.log(readmes);
 
         let updatedLegalStudentList = updateStudents(dataStructure, filenames);
-
-        console.log(group_member_names);
 
         const placeholderData = [
             ["john", 4, ["course-automation", "demo", "essay", "executable-tutorial"]],
