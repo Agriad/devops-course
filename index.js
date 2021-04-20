@@ -59,18 +59,33 @@ async function getAllReadme(octokit, owner, repoName, ref) {
     //     );
     // });
 
-    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
-    let categoryGroups = categoryPayload.data;
+    for (let i = 0; i < projects.length; i++) {
+        let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[i], ref);
+        let categoryGroups = categoryPayload.data;
 
-    for (let index = 1; index < categoryGroups.length; index++) {
-        let groupPayload = categoryGroups[index];
-        let groupName = groupPayload.name;
+        for (let j = 1; j < categoryGroups.length; j++) {
+            let groupPayload = categoryGroups[j];
+            let groupName = groupPayload.name;
 
-        let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
-        let readmeContentBase64 = readmePayload.content;
-        let readmeContent = atob(readmeContentBase64);
-        console.log(readmeContent);
+            let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
+            let readmeContentBase64 = readmePayload.content;
+            let readmeContent = atob(readmeContentBase64);
+            console.log(readmeContent);
+        }
     }
+
+    // let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
+    // let categoryGroups = categoryPayload.data;
+
+    // for (let j = 1; j < categoryGroups.length; j++) {
+    //     let groupPayload = categoryGroups[j];
+    //     let groupName = groupPayload.name;
+
+    //     let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
+    //     let readmeContentBase64 = readmePayload.content;
+    //     let readmeContent = atob(readmeContentBase64);
+    //     console.log(readmeContent);
+    // }
 
     // let presentationTextArray = [];
     // let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
