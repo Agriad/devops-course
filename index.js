@@ -176,12 +176,15 @@ async function main() {
 
         var group_member_names = [];
 
-        for (const cathegory of filenames) {
-            for (const member_folder of cathegory) {
+        for (const outer_list of filenames) {
+            for (const cathegory of outer_list) {
 
-                console.log(member_folder);
+                for (const member_folder of cathegory) {
 
-                group_member_names.push(member_folder.split("-"));
+                    console.log(member_folder);
+    
+                    group_member_names.push(member_folder.split("-"));
+                }
             }
         }
 
