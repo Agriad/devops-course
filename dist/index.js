@@ -6101,23 +6101,40 @@ async function getAllReadme(octokit, owner, repoName, ref) {
 
     let contributions = await getFile(octokit, owner, repoName, "contributions", ref);
     console.log(contributions);
+    let contributionsPayload = contributions.data;
 
     projects.forEach(category => {
         console.log("contributions/" + category);
     });
 
-    let categoryPayload = await getFile(octokit, owner, repoName, "contributions/open-source", ref);
-    let categoryGroups = categoryPayload.data;
+    for (let i = 1; i < contributionsPayload.length - 1; i++) {
+        let categoryPayload = await getFile(octokit, owner, repoName, contributionsPayload.path, ref);
+        let categoryGroups = categoryPayload.data;
 
-    for (let j = 1; j < categoryGroups.length; j++) {
-        let groupPayload = categoryGroups[j];
-        let groupName = groupPayload.name;
+        for (let j = 1; j < categoryGroups.length; j++) {
+            let groupPayload = categoryGroups[j];
+            let groupName = groupPayload.name;
 
-        let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
-        let readmeContentBase64 = readmePayload.content;
-        let readmeContent = atob(readmeContentBase64);
-        console.log(readmeContent);
+            let readmePayload = await getReadme(octokit, owner, repoName, contributionsPayload.path + "/" + groupName, ref);
+            let readmeContentBase64 = readmePayload.content;
+            let readmeContent = atob(readmeContentBase64);
+            console.log(readmeContent);
+        }
+        
     }
+
+    // let categoryPayload = await getFile(octokit, owner, repoName, "contributions/open-source", ref);
+    // let categoryGroups = categoryPayload.data;
+
+    // for (let j = 1; j < categoryGroups.length; j++) {
+    //     let groupPayload = categoryGroups[j];
+    //     let groupName = groupPayload.name;
+
+    //     let readmePayload = await getReadme(octokit, owner, repoName, "contributions/" + "feedback" + "/" + groupName, ref);
+    //     let readmeContentBase64 = readmePayload.content;
+    //     let readmeContent = atob(readmeContentBase64);
+    //     console.log(readmeContent);
+    // }
 
     // let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + "feedback", ref);
     // let categoryGroups = categoryPayload.data;
@@ -6277,24 +6294,24 @@ async function main() {
         // console.log(files);
 
         // Example directory
-        const dir = "contributions/essay/carinawi-urama"
+        // const dir = "contributions/essay/carinawi-urama"
 
-        console.log("accessing readme");
+        // console.log("accessing readme");
         // Extract The readme file with the feedback from the correct directory
-        var file = await getReadme(octokit,owner,repoName,dir,branch)
-        var markdown = atob(file.content) //atob returns a string with the content of the README file
+        // var file = await getReadme(octokit,owner,repoName,dir,branch)
+        // var markdown = atob(file.content) //atob returns a string with the content of the README file
 
-        console.log("Content of the README file:");
-        console.log(markdown);
+        // console.log("Content of the README file:");
+        // console.log(markdown);
 
         //var txt = 'carinawi@kth.se justin stefan bob@kth.se john';
         
-        const regex = '[a-z]*@kth';
+        // const regex = '[a-z]*@kth';
                     
-        const matches = [...markdown.matchAll(regex)];
+        // const matches = [...markdown.matchAll(regex)];
 
-        console.log("emails from the readme-file");
-        console.log(matches);
+        // console.log("emails from the readme-file");
+        // console.log(matches);
 
         // TODO finish this
         // Comment about the legal teammates
