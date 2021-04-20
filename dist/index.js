@@ -6088,11 +6088,34 @@ function getAllReadme(octokit, owner, repoName, ref) {
         let query = new Promise((resolve, reject) => {
         resolve(getFile(octokit, owner, repoName, "contributions/" + category, ref)),
         reject("Error")
-        })
+        });
+
         query.then(
             categoryPayload => {
+                let categoryArray = [];
                 console.log(categoryPayload);
-            });
+
+                for (let index = 1; index < categoryPayload.length; index++) {
+                    let name = categoryPayload[index];
+
+                    let readmePromise = new Promise((resolve, reject) => {
+                        resolve(getReadme(octokit, owner, repoName, "contributions/" + category + "/" + name, ref)),
+                        reject("Error")
+                    });
+
+                    readmePromise.then(
+                        readmePayload => {
+                            let readmeContentBase64 = readmePayload.content;
+                            let readmeContent = atob(readmeContentBase64);
+                            console.log(readmeContent);
+                            categoryArray.push(readmeContent);
+                        }
+                    )
+                }
+
+                textArray.push([category ,categoryArray]);
+            }
+        );
     });
 
     // let presentationTextArray = [];
@@ -6100,15 +6123,15 @@ function getAllReadme(octokit, owner, repoName, ref) {
 
     // let presentationData = presentationPayload.data;
 
-    // for (let index = 1; index < presentationData.length; index++) {
-    //     let weekNamePayload = presentationData[index];
+    // for (let i = 1; i < presentationData.length; i++) {
+    //     let weekNamePayload = presentationData[i];
     //     let weekName = weekNamePayload.name;
     //     let presentationWeekPayload = await getFile(octokit, owner, repoName, "contributions/presentation/" + weekName, ref);
 
     //     let presentationGroups = presentationWeekPayload.data;
 
-    //     for (let index = 1; index < presentationGroups.length; index++) {
-    //         let groupPayload = presentationGroups[index];
+    //     for (let j = 1; j < presentationGroups.length; j++) {
+    //         let groupPayload = presentationGroups[j];
     //         let groupName = groupPayload.name;
     //         let readmePayload = await getReadme(octokit, owner, repoName, "contributions/presentation/" + weekName + "/" + groupName, ref)
 
@@ -6118,7 +6141,7 @@ function getAllReadme(octokit, owner, repoName, ref) {
     //     }
     // }
 
-    // textArray.push(presentationTextArray);
+    // textArray.push(["presentation", presentationTextArray]);
 
     // return textArray;
 }
