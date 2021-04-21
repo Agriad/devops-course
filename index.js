@@ -85,6 +85,13 @@ function createTeammateComment(dataStructure, ownName) {
     return finalComment;
 }
 
+/**
+ * Updates the data structure with the data
+ * @param {Object} legalStudentList the list of students
+ * @param {Object} fileNames the list of files
+ * @param {string} ownName the name of the asking student
+ * @returns {Object} The updated data structure
+ */
 function updateStudents(legalStudentList, fileNames, ownName) {
     // go through the categories
     fileNames.forEach(categoryArray => {
