@@ -73,10 +73,10 @@ function createTeammateComment(mainStudentList, askingStudentName) {
                     else if (studentCategories.length >= 4) {
                         projectAmountBoolean = false;
                     }
-        
+
                     if (partnerBoolean && projectAmountBoolean) {
                         const studentText = studentName + "@kth.se, ";
-                        finalComment += studentText;   
+                        finalComment += studentText;
                     }
                 }
             });
@@ -113,7 +113,7 @@ async function getAllFolderNames(octokit, owner, repoName, ref) {
             let groupName = groupPayload.name;
             categoryArray.push(groupName);
         }
-        
+
         folderArray.push([projects[i], categoryArray]);
     }
 
@@ -136,7 +136,7 @@ async function getAllFolderNames(octokit, owner, repoName, ref) {
         for (let j = 1; j < presentationGroups.length; j++) {
             let groupPayload = presentationGroups[j];
             let groupName = groupPayload.name;
-            
+
             presentationFolderArray.push(groupName);
         }
     }
@@ -158,13 +158,13 @@ async function getAllFolderNames(octokit, owner, repoName, ref) {
 async function getFile(octokit, owner, repoName, path, ref) {
     return new Promise((resolve, reject) => {
         resolve(
-        octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-            owner: owner,
-            repo: repoName,
-            path: path,
-            ref: ref
-        })),
-        reject("Error")
+            octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
+                owner: owner,
+                repo: repoName,
+                path: path,
+                ref: ref
+            })),
+            reject("Error")
     })
 }
 
@@ -173,7 +173,7 @@ async function getFile(octokit, owner, repoName, path, ref) {
  * @param  {Object} payload Payload containing the title
  * @return {string}         String containing the requester's email name
  */
- function parseTitle(payload) {
+function parseTitle(payload) {
     const title = payload.issue.title;
 
     if (title.includes("Teammate request:")) {
@@ -194,7 +194,7 @@ async function getFile(octokit, owner, repoName, path, ref) {
  * @param {string} askingStudentName the name of the asking student
  * @returns {Object} The updated main student list
  */
- function updateMainStudentList(mainStudentList, folderNames, askingStudentName) {
+function updateMainStudentList(mainStudentList, folderNames, askingStudentName) {
     // go through the categories
     folderNames.forEach(categoryArray => {
         let categoryName = categoryArray[0];
@@ -211,11 +211,11 @@ async function getFile(octokit, owner, repoName, path, ref) {
                         let dataStudent = mainStudentList[index];
                         let studentCategories = dataStudent[2];
                         const studentName = dataStudent[0];
-    
+
                         // if it is the asking student's partner in this project
                         if (studentName.includes(name)) {
                             studentCategories.push(categoryName);
-                            dataStudent[1] += 1;   
+                            dataStudent[1] += 1;
                         }
                     }
                 } else {
@@ -223,7 +223,7 @@ async function getFile(octokit, owner, repoName, path, ref) {
                         let dataStudent = mainStudentList[index];
                         let studentCategories = dataStudent[2];
                         const studentName = dataStudent[0];
-    
+
                         if (studentName.localeCompare(name) == 0) {
                             studentCategories.push(categoryName);
                         }
@@ -248,11 +248,11 @@ async function main() {
         const context = github.context;
         const payload = context.payload;
         const { issue } = github.context;
-    
+
         // Checks if the triggering action is caused by an issue
         if (!payload.issue) {
             core.debug(
-              "This event is not an issue being opened"
+                "This event is not an issue being opened"
             );
             return;
         }
@@ -276,7 +276,7 @@ async function main() {
 
         // Get student list
         const studentListPayload = await getFile(octokit, owner, repoName, studentListFile, studentListBranch);
-        
+
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
 
@@ -306,9 +306,9 @@ async function main() {
             repo: issue.repo,
             issue_number: issue.number,
             body: "Good luck with your project!\n" +
-            "If you would like to search for more potential teammates, " +
-            "please create a new issue with the template title:\n" +
-            "\"Teammate request: your-kth-email@kth.se\"."
+                "If you would like to search for more potential teammates, " +
+                "please create a new issue with the template title:\n" +
+                "\"Teammate request: your-kth-email@kth.se\"."
         });
 
         // Closes the issue
@@ -320,10 +320,10 @@ async function main() {
         });
 
         console.log("Done");
-       
+
     } catch (error) {
         core.setFailed(error.message);
-    }   
+    }
 }
 
 main()
