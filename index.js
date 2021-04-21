@@ -1,6 +1,6 @@
 const core = require('@actions/core');
 const github = require('@actions/github');
-var atob = require('atob');
+const atob = require('atob');
 const { Context } = require('@actions/github/lib/context');
 
 /**
@@ -9,7 +9,7 @@ const { Context } = require('@actions/github/lib/context');
  * @returns {Object} A 3D list of students and values 
  * [[name 1, counter 1, [list of categories]], [name 2, counter 1, [list of categories]]]
  */
-function createDataStructure(studentListText) {
+function createMainStudentList(studentListText) {
     let names = studentListText.split("\n");
     names.pop();
     names.sort();
@@ -25,16 +25,16 @@ function createDataStructure(studentListText) {
 
 /**
  * Creates a text for the legal teammates comment.
- * @param {Object} dataStructure The student list data structure
+ * @param {Object} mainStudentList The student list data structure
  * @returns {string} The comment for the legal teammates
  */
-function createTeammateComment(dataStructure, ownName) {
+function createTeammateComment(mainStudentList, ownName) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
     let finalComment = "Legal Teammates:\n";
     let ownCategories = [];
 
     // find the asking student's categories
-    dataStructure.forEach(studentArray => {
+    mainStudentList.forEach(studentArray => {
         const studentName = studentArray[0];
 
         if (studentName.localeCompare(ownName) == 0) {
@@ -49,7 +49,7 @@ function createTeammateComment(dataStructure, ownName) {
 
         // go through all students
         if (ownCategories < 4 && !ownCategories.includes(category)) {
-            dataStructure.forEach(studentArray => {
+            mainStudentList.forEach(studentArray => {
                 const studentName = studentArray[0];
                 const studentCategories = studentArray[2];
                 let partnerBoolean = true;
@@ -86,64 +86,15 @@ function createTeammateComment(dataStructure, ownName) {
 }
 
 /**
- * Updates the data structure with the data
- * @param {Object} legalStudentList the list of students
- * @param {Object} fileNames the list of files
- * @param {string} ownName the name of the asking student
- * @returns {Object} The updated data structure
- */
-function updateStudents(legalStudentList, fileNames, ownName) {
-    // go through the categories
-    fileNames.forEach(categoryArray => {
-        let categoryName = categoryArray[0];
-
-        // split the group names
-        categoryArray[1].forEach(groups => {
-            let groupNames = groups.split("-");
-
-            // go through the group names
-            groupNames.forEach(name => {
-                // if the asking student is in the group
-                if (groupNames.includes(ownName)) {
-                    for (let index = 0; index < legalStudentList.length; index++) {
-                        let dataStudent = legalStudentList[index];
-                        let studentCategories = dataStudent[2];
-                        const studentName = dataStudent[0];
-    
-                        // if it is the asking student's partner 
-                        if (studentName.includes(name)) {
-                            studentCategories.push(categoryName);
-                            dataStudent[1] += 1;   
-                        }
-                    }
-                } else {
-                    for (let index = 0; index < legalStudentList.length; index++) {
-                        let dataStudent = legalStudentList[index];
-                        let studentCategories = dataStudent[2];
-                        const studentName = dataStudent[0];
-    
-                        if (studentName.localeCompare(name) == 0) {
-                            studentCategories.push(categoryName);
-                        }
-                    }
-                }
-            });
-        });
-    });
-
-    return legalStudentList;
-}
-
-/**
- * Gets all the READMEs from the main branch of the repository. Requires the name of the README to be README not a typo like REAMDE.
+ * Gets all the folder names containing the students' names from the main branch of the repository.
  * @param {Object} octokit octokit to handle the GitHub API
  * @param {string} owner owner of the repository
  * @param {string} repoName repository name
  * @param {string} ref the branch where the file is located
- * @returns {Object} A 3D list of READMEs and which categories they are in. 
+ * @returns {Object} A 3D list of names and which categories they are in. 
  * [[demo, [group 1, group 2]], [presentation, [group 1, group 2]]]
  */
-async function getAllFileNames(octokit, owner, repoName, ref) {
+async function getAllFolderNames(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
     let textArray = [];
 
@@ -208,11 +159,10 @@ async function getFile(octokit, owner, repoName, path, ref) {
     })
 }
 
-
 /**
  * Parses the title
  * @param  {Object} payload Payload containing the title
- * @return {string}         String containing the requester's email
+ * @return {string}         String containing the requester's email name
  */
  function parseTitle(payload) {
     const title = payload.issue.title;
@@ -229,13 +179,62 @@ async function getFile(octokit, owner, repoName, path, ref) {
 }
 
 /**
+ * Updates the data structure with the data
+ * @param {Object} mainStudentList the list of students
+ * @param {Object} folderNames the list of folder names
+ * @param {string} ownName the name of the asking student
+ * @returns {Object} The updated data structure
+ */
+ function updateMainStudentList(mainStudentList, folderNames, ownName) {
+    // go through the categories
+    folderNames.forEach(categoryArray => {
+        let categoryName = categoryArray[0];
+
+        // split the group names
+        categoryArray[1].forEach(groups => {
+            let groupNames = groups.split("-");
+
+            // go through the group names
+            groupNames.forEach(name => {
+                // if the asking student is in the group
+                if (groupNames.includes(ownName)) {
+                    for (let index = 0; index < mainStudentList.length; index++) {
+                        let dataStudent = mainStudentList[index];
+                        let studentCategories = dataStudent[2];
+                        const studentName = dataStudent[0];
+    
+                        // if it is the asking student's partner 
+                        if (studentName.includes(name)) {
+                            studentCategories.push(categoryName);
+                            dataStudent[1] += 1;   
+                        }
+                    }
+                } else {
+                    for (let index = 0; index < mainStudentList.length; index++) {
+                        let dataStudent = mainStudentList[index];
+                        let studentCategories = dataStudent[2];
+                        const studentName = dataStudent[0];
+    
+                        if (studentName.localeCompare(name) == 0) {
+                            studentCategories.push(categoryName);
+                        }
+                    }
+                }
+            });
+        });
+    });
+
+    return mainStudentList;
+}
+
+/**
  * The main function for finding legal teammates.
  */
 async function main() {
     try {
         const githubSecret = core.getInput("github-token");
-        const listBranch = core.getInput("list-branch");
-        const listFile = core.getInput("list-file");
+        const studentListBranch = core.getInput("list-branch");
+        const studentListFile = core.getInput("list-file");
         const mainBranch = core.getInput("main-branch");
         const context = github.context;
         const payload = context.payload;
@@ -249,55 +248,43 @@ async function main() {
             return;
         }
 
-        const email = parseTitle(payload);
+        const askingStudentName = parseTitle(payload);
 
-        if (email != null) {
+        // if title contains "Teammate request" then we should do everything
+        if (askingStudentName != null) {
             console.log("title contains Teammate request:");
-            console.log(email);
+            console.log(askingStudentName);
         } else {
-            console.log("wrong title");
+            console.log("Wrong title or issue not asking for legal teammates");
             return
         }
 
         const octokit = github.getOctokit(githubSecret);
-        
-        // if title contains "Teammate request" then we should do everything
 
         // Variables required to access files in repo
         const owner = issue.owner;
         const repoName = issue.repo;
-        const branch = mainBranch;
 
         // Get student list
-        const studentListPayload = await getFile(octokit, owner, repoName, listFile, listBranch);
+        const studentListPayload = await getFile(octokit, owner, repoName, studentListFile, studentListBranch);
         
         const studentListBase64 = studentListPayload.data.content;
         const studentListText = atob(studentListBase64);
 
         // Make a data structure for the students
-        let dataStructure = createDataStructure(studentListText);
-        console.log(dataStructure);
+        let mainStudentList = createMainStudentList(studentListText);
+        console.log(mainStudentList);
 
-        // Get all file names
-        let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
+        // Get all folder names
+        let folderNames = await getAllFolderNames(octokit, owner, repoName, mainBranch);
 
-        // ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
+        // Update the main student list with the file names data
+        let updatedMainStudentList = updateMainStudentList(mainStudentList, folderNames, askingStudentName);
+        console.log(updatedMainStudentList);
 
-        let exampleEmail = "eve";
-        let exampleData = [
-            ["bob", 0, ["course-automation", "demo", "essay", "executable-tutorial"]], 
-            ["alice", 1, ["course-automation", "open-source", "presentation"]],
-            ["joe", 2, ["demo", "essay"]],
-            ["eve", 0, ["course-automation", "demo", "essay"]]
-        ];
-
-        let updatedLegalStudentList = updateStudents(dataStructure, filenames, email);
-        console.log(updatedLegalStudentList);
-
-        const teammateComment = createTeammateComment(updatedLegalStudentList, email);
+        const teammateComment = createTeammateComment(updatedMainStudentList, askingStudentName);
         console.log(teammateComment);
 
-        // TODO finish this
         // Comment about the legal teammates
         await octokit.issues.createComment({
             owner: issue.owner,
