@@ -6113,24 +6113,26 @@ function createTeammateComment(dataStructure, ownName) {
                 let partnerBoolean = true;
                 let projectAmountBoolean = true;
                 let askingStudentBoolean = true;
-    
-                // go through each student's categories
-                for (let i = 0; i < studentCategories.length; i++) {
-                    // if they are not in the categories that the asking student is in
-                    if (studentArray[1] >= 2) {
-                        partnerBoolean = false;
+
+                if (!studentCategories.includes(category)) {
+                    // go through each student's categories
+                    for (let i = 0; i < studentCategories.length; i++) {
+                        // if they are not in the categories that the asking student is in
+                        if (studentArray[1] >= 2) {
+                            partnerBoolean = false;
+                        }
+                        else if (studentCategories.length >= 4) {
+                            projectAmountBoolean = false;
+                        }
+                        else if (ownName.localeCompare(studentName) == 0) {
+                            askingStudentBoolean = false;
+                        }
                     }
-                    else if (studentCategories.length >= 4) {
-                        projectAmountBoolean = false;
+        
+                    if (partnerBoolean && projectAmountBoolean && askingStudentBoolean) {
+                        const studentText = studentName + "@kth.se, ";
+                        finalComment += studentText;   
                     }
-                    else if (ownName.localeCompare(studentName) == 0) {
-                        askingStudentBoolean = false;
-                    }
-                }
-    
-                if (partnerBoolean && projectAmountBoolean && askingStudentBoolean) {
-                    const studentText = studentName + "@kth.se, ";
-                    finalComment += studentText;   
                 }
             });
         }
