@@ -6343,7 +6343,6 @@ async function main() {
 
         // Get all folder names
         let folderNames = await getAllFolderNames(octokit, owner, repoName, mainBranch);
-        console.log(folderNames);
 
         // Update the main student list with the file names data
         let updatedMainStudentList = updateMainStudentList(mainStudentList, folderNames, askingStudentName);
