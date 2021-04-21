@@ -56,22 +56,22 @@ function createTeammateComment(dataStructure, ownName) {
                 let projectAmountBoolean = true;
                 let askingStudentBoolean = true;
 
-                if (!studentCategories.includes(category)) {
+                if (ownName.localeCompare(studentName) == 0) {
+                    askingStudentBoolean = false;
+                    console.log("own name:");
+                    console.log(studentName);
+                }
+
+                if (!studentCategories.includes(category) && askingStudentBoolean) {
                     // go through each student's categories
-                    for (let i = 0; i < studentCategories.length; i++) {
-                        // if they are not in the categories that the asking student is in
-                        if (studentArray[1] >= 2) {
-                            partnerBoolean = false;
-                        }
-                        else if (studentCategories.length >= 4) {
-                            projectAmountBoolean = false;
-                        }
-                        else if (ownName.localeCompare(studentName) == 0) {
-                            askingStudentBoolean = false;
-                        }
+                    if (studentArray[1] >= 2) {
+                        partnerBoolean = false;
+                    }
+                    else if (studentCategories.length >= 4) {
+                        projectAmountBoolean = false;
                     }
         
-                    if (partnerBoolean && projectAmountBoolean && askingStudentBoolean) {
+                    if (partnerBoolean && projectAmountBoolean) {
                         const studentText = studentName + "@kth.se, ";
                         finalComment += studentText;   
                     }
