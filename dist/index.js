@@ -6106,7 +6106,7 @@ function createTeammateComment(dataStructure, ownName) {
         finalComment += text;
 
         // go through all students
-        if (!ownCategories.includes(category)) {
+        if (ownCategories < 4 && !ownCategories.includes(category)) {
             dataStructure.forEach(studentArray => {
                 const studentName = studentArray[0];
                 const studentCategories = studentArray[2];
