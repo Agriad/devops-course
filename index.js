@@ -33,6 +33,7 @@ function createTeammateComment(dataStructure, ownName) {
     let finalComment = "Legal Teammates:\n";
     let ownCategories = [];
 
+    // find the asking student's categories
     dataStructure.forEach(studentArray => {
         const studentName = studentArray[0];
 
@@ -41,23 +42,48 @@ function createTeammateComment(dataStructure, ownName) {
         }
     });
 
+    // go through the categories
     projects.forEach(category => {
         const text = category + ": "
         finalComment += text;
 
-        dataStructure.forEach(studentArray => {
-            const studentName = studentArray[0];
-            const studentCategories = studentArray[2];
-
-            for (let i = 0; i < studentCategories.length; i++) {
-                if (!ownCategories.includes(studentCategories[i]) == 0) {
-                    if ((studentArray[1] < 2) && (studentCategories.length < 4) && !studentName.includes(ownName)) {
-                        const studentText = studentName + "@kth.se, ";
-                        finalComment += studentText;
+        // go through all students
+        if (!ownCategories.includes(category)) {
+            dataStructure.forEach(studentArray => {
+                const studentName = studentArray[0];
+                const studentCategories = studentArray[2];
+                let partnerBoolean = true;
+                let projectAmountBoolean = true;
+                let askingStudentBoolean = true;
+    
+                console.log(studentArray);
+                console.log("at category: " + category);
+                console.log("at student: " + studentName);
+    
+                // go through each student's categories
+                for (let i = 0; i < studentCategories.length; i++) {
+                    console.log("at student category: " + studentCategories[i]);
+                    // if they are not in the categories that the asking student is in
+                    if (studentArray[1] >= 2) {
+                        partnerBoolean = false;
+                    }
+                    else if (studentCategories.length >= 4) {
+                        projectAmountBoolean = false;
+                    }
+                    else if (ownName.localeCompare(studentName) == 0) {
+                        askingStudentBoolean = false;
                     }
                 }
-            }
-        });
+                console.log("partner boolean:" + partnerBoolean);
+                console.log("project amount boolean:" + projectAmountBoolean);
+                console.log("asking student boolean:" + askingStudentBoolean);
+    
+                if (partnerBoolean && projectAmountBoolean && askingStudentBoolean) {
+                    const studentText = studentName + "@kth.se, ";
+                    finalComment += studentText;   
+                }
+            });
+        }
 
         finalComment += "\n";
     });
@@ -66,20 +92,24 @@ function createTeammateComment(dataStructure, ownName) {
 }
 
 function updateStudents(legalStudentList, fileNames, ownName) {
+    // go through the categories
     fileNames.forEach(categoryArray => {
         let categoryName = categoryArray[0];
 
+        // split the group names
         categoryArray[1].forEach(groups => {
             let groupNames = groups.split("-");
 
+            // go through the group names
             groupNames.forEach(name => {
-
+                // if the asking student is in the group
                 if (groupNames.includes(ownName)) {
                     for (let index = 0; index < legalStudentList.length; index++) {
                         let dataStudent = legalStudentList[index];
                         let studentCategories = dataStudent[2];
                         const studentName = dataStudent[0];
     
+                        // if it is the asking student's partner 
                         if (studentName.includes(name)) {
                             studentCategories.push(categoryName);
                             dataStudent[1] += 1;   
@@ -255,6 +285,16 @@ async function main() {
         // Get all file names
         let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
         //console.log(readmes);
+
+        // ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
+
+        let exampleEmail = "eve";
+        let exampleData = [
+            ["bob", 0, ["course-automation", "demo", "essay", "executable-tutorial"]], 
+            ["alice", 1, ["course-automation", "open-source", "presentation"]],
+            ["joe", 2, ["demo", "essay"]],
+            ["eve", 0, ["course-automation", "demo", "essay"]]
+        ];
 
         let updatedLegalStudentList = updateStudents(dataStructure, filenames, email);
 
