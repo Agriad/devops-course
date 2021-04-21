@@ -6059,7 +6059,6 @@ var __webpack_exports__ = {};
 const core = __nccwpck_require__(127);
 const github = __nccwpck_require__(134);
 const atob = __nccwpck_require__(547);
-const { Context } = __nccwpck_require__(210);
 
 /**
  * Creates a nested list to represent the students.
@@ -6086,17 +6085,17 @@ function createMainStudentList(studentListText) {
  * @param {Object} mainStudentList The student list data structure
  * @returns {string} The comment for the legal teammates
  */
-function createTeammateComment(mainStudentList, ownName) {
+function createTeammateComment(mainStudentList, askingStudentName) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
     let finalComment = "Legal Teammates:\n";
-    let ownCategories = [];
+    let askingStudentCategories = [];
 
     // find the asking student's categories
     mainStudentList.forEach(studentArray => {
         const studentName = studentArray[0];
 
-        if (studentName.localeCompare(ownName) == 0) {
-            ownCategories = studentArray[2];
+        if (studentName.localeCompare(askingStudentName) == 0) {
+            askingStudentCategories = studentArray[2];
         }
     });
 
@@ -6105,8 +6104,10 @@ function createTeammateComment(mainStudentList, ownName) {
         const text = category + ": "
         finalComment += text;
 
-        // go through all students
-        if (ownCategories < 4 && !ownCategories.includes(category)) {
+        // check if asking student has worked 4 project
+        // check if asking student has worked in this category
+        if (askingStudentCategories < 4 && !askingStudentCategories.includes(category)) {
+            // go through the main list of students
             mainStudentList.forEach(studentArray => {
                 const studentName = studentArray[0];
                 const studentCategories = studentArray[2];
@@ -6114,17 +6115,19 @@ function createTeammateComment(mainStudentList, ownName) {
                 let projectAmountBoolean = true;
                 let askingStudentBoolean = true;
 
-                if (ownName.localeCompare(studentName) == 0) {
+                // check if this student is the one asking
+                if (askingStudentName.localeCompare(studentName) == 0) {
                     askingStudentBoolean = false;
-                    console.log("own name:");
-                    console.log(studentName);
                 }
 
+                // check if student has worked in this category
+                // check if this student is the one asking
                 if (!studentCategories.includes(category) && askingStudentBoolean) {
-                    // go through each student's categories
+                    // check if the student has worked with the asking student twice
                     if (studentArray[1] >= 2) {
                         partnerBoolean = false;
                     }
+                    // check if the student has worked 4 project
                     else if (studentCategories.length >= 4) {
                         projectAmountBoolean = false;
                     }
@@ -6154,27 +6157,32 @@ function createTeammateComment(mainStudentList, ownName) {
  */
 async function getAllFolderNames(octokit, owner, repoName, ref) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source"];
-    let textArray = [];
+    let folderArray = [];
 
+    // go through the project categories
     for (let i = 0; i < projects.length; i++) {
         let categoryPayload = await getFile(octokit, owner, repoName, "contributions/" + projects[i], ref);
         let categoryGroups = categoryPayload.data;
         let categoryArray = [];
 
+        // go through the projects in this category
         for (let j = 1; j < categoryGroups.length; j++) {
             let groupPayload = categoryGroups[j];
             let groupName = groupPayload.name;
             categoryArray.push(groupName);
         }
         
-        textArray.push([projects[i], categoryArray]);
+        folderArray.push([projects[i], categoryArray]);
     }
 
-    let presentationTextArray = [];
+    // special section for presentation because they have "weeks" subfolder
+
+    let presentationFolderArray = [];
     let presentationPayload = await getFile(octokit, owner, repoName, "contributions/presentation", ref);
 
     let presentationData = presentationPayload.data;
 
+    // go through the weeks
     for (let i = 1; i < presentationData.length; i++) {
         let weekNamePayload = presentationData[i];
         let weekName = weekNamePayload.name;
@@ -6182,17 +6190,18 @@ async function getAllFolderNames(octokit, owner, repoName, ref) {
 
         let presentationGroups = presentationWeekPayload.data;
 
+        // go through the presentation this week
         for (let j = 1; j < presentationGroups.length; j++) {
             let groupPayload = presentationGroups[j];
             let groupName = groupPayload.name;
             
-            presentationTextArray.push(groupName);
+            presentationFolderArray.push(groupName);
         }
     }
 
-    textArray.push(["presentation", presentationTextArray]);
+    folderArray.push(["presentation", presentationFolderArray]);
 
-    return textArray;
+    return folderArray;
 }
 
 /**
@@ -6218,7 +6227,7 @@ async function getFile(octokit, owner, repoName, path, ref) {
 }
 
 /**
- * Parses the title
+ * Parses the title.
  * @param  {Object} payload Payload containing the title
  * @return {string}         String containing the requester's email name
  */
@@ -6237,13 +6246,13 @@ async function getFile(octokit, owner, repoName, path, ref) {
 }
 
 /**
- * Updates the data structure with the data
- * @param {Object} mainStudentList the list of students
+ * Updates the main student list with the data from the folders.
+ * @param {Object} mainStudentList the main list of students
  * @param {Object} folderNames the list of folder names
- * @param {string} ownName the name of the asking student
- * @returns {Object} The updated data structure
+ * @param {string} askingStudentName the name of the asking student
+ * @returns {Object} The updated main student list
  */
- function updateMainStudentList(mainStudentList, folderNames, ownName) {
+ function updateMainStudentList(mainStudentList, folderNames, askingStudentName) {
     // go through the categories
     folderNames.forEach(categoryArray => {
         let categoryName = categoryArray[0];
@@ -6255,13 +6264,13 @@ async function getFile(octokit, owner, repoName, path, ref) {
             // go through the group names
             groupNames.forEach(name => {
                 // if the asking student is in the group
-                if (groupNames.includes(ownName)) {
+                if (groupNames.includes(askingStudentName)) {
                     for (let index = 0; index < mainStudentList.length; index++) {
                         let dataStudent = mainStudentList[index];
                         let studentCategories = dataStudent[2];
                         const studentName = dataStudent[0];
     
-                        // if it is the asking student's partner 
+                        // if it is the asking student's partner in this project
                         if (studentName.includes(name)) {
                             studentCategories.push(categoryName);
                             dataStudent[1] += 1;   
@@ -6331,17 +6340,15 @@ async function main() {
 
         // Make a data structure for the students
         let mainStudentList = createMainStudentList(studentListText);
-        console.log(mainStudentList);
 
         // Get all folder names
         let folderNames = await getAllFolderNames(octokit, owner, repoName, mainBranch);
+        console.log(folderNames);
 
         // Update the main student list with the file names data
         let updatedMainStudentList = updateMainStudentList(mainStudentList, folderNames, askingStudentName);
-        console.log(updatedMainStudentList);
 
         const teammateComment = createTeammateComment(updatedMainStudentList, askingStudentName);
-        console.log(teammateComment);
 
         // Comment about the legal teammates
         await octokit.issues.createComment({
