@@ -56,13 +56,8 @@ function createTeammateComment(dataStructure, ownName) {
                 let projectAmountBoolean = true;
                 let askingStudentBoolean = true;
     
-                console.log(studentArray);
-                console.log("at category: " + category);
-                console.log("at student: " + studentName);
-    
                 // go through each student's categories
                 for (let i = 0; i < studentCategories.length; i++) {
-                    console.log("at student category: " + studentCategories[i]);
                     // if they are not in the categories that the asking student is in
                     if (studentArray[1] >= 2) {
                         partnerBoolean = false;
@@ -74,9 +69,6 @@ function createTeammateComment(dataStructure, ownName) {
                         askingStudentBoolean = false;
                     }
                 }
-                console.log("partner boolean:" + partnerBoolean);
-                console.log("project amount boolean:" + projectAmountBoolean);
-                console.log("asking student boolean:" + askingStudentBoolean);
     
                 if (partnerBoolean && projectAmountBoolean && askingStudentBoolean) {
                     const studentText = studentName + "@kth.se, ";
@@ -129,8 +121,6 @@ function updateStudents(legalStudentList, fileNames, ownName) {
             });
         });
     });
-
-    console.log(legalStudentList);
 
     return legalStudentList;
 }
@@ -263,9 +253,6 @@ async function main() {
         const octokit = github.getOctokit(githubSecret);
         
         // if title contains "Teammate request" then we should do everything
-        console.log("title contains Teammate request:");
-
-        console.log("specifying git varables");
 
         // Variables required to access files in repo
         const owner = issue.owner;
@@ -284,7 +271,6 @@ async function main() {
 
         // Get all file names
         let filenames = await getAllFileNames(octokit, owner, repoName, mainBranch);
-        //console.log(readmes);
 
         // ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
 
@@ -297,6 +283,7 @@ async function main() {
         ];
 
         let updatedLegalStudentList = updateStudents(dataStructure, filenames, email);
+        console.log(updatedLegalStudentList);
 
         const teammateComment = createTeammateComment(updatedLegalStudentList, email);
         console.log(teammateComment);
@@ -330,7 +317,7 @@ async function main() {
             state: "closed"
         });
 
-        console.log(`It is working`);
+        console.log("Done");
        
     } catch (error) {
         core.setFailed(error.message);
