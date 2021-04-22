@@ -6068,13 +6068,14 @@ const atob = __nccwpck_require__(651);
  */
 function createMainStudentList(studentListText) {
     let names = studentListText.split("\n");
-    names.pop();
-    names.sort();
+    let regex = [a-z0-9];
     let dataStructure = [];
 
     names.forEach(name => {
-        let data = [name, 0, []];
-        dataStructure.push(data)
+        if (name.match(regex)) {
+            let data = [name, 0, []];
+            dataStructure.push(data);
+        }
     });
 
     return dataStructure
