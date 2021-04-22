@@ -310,10 +310,11 @@ async function main() {
             owner: issue.owner,
             repo: issue.repo,
             issue_number: issue.number,
-            body: "Good luck with your project!\n" +
-                "If you would like to search for more potential teammates, " +
+            body: "Good luck with your projects!\n" +
+                "If you would like to search for potential teammates again, " +
                 "please create a new issue with the template title:\n" +
-                "\"Teammate request: your-kth-email@kth.se\"."
+                "\"Teammate request: your-kth-email@kth.se\"\n" +
+                "or reopen this issue."
         });
 
         // Closes the issue
