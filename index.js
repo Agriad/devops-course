@@ -53,7 +53,7 @@ function createTeammateComment(updatedMainStudentList, askingStudentName) {
 
         // check if asking student has worked 4 project
         // check if asking student has worked in this category
-        if (askingStudentCategories < 4 && !askingStudentCategories.includes(category)) {
+        if (askingStudentCategories.length < 4 && !askingStudentCategories.includes(category)) {
             // go through the main list of students
             console.log("I have not worked in this category before:");
             console.log(category);
