@@ -5,8 +5,10 @@ on:
 jobs:
   legal_teammates:
     runs-on: ubuntu-latest
-    name: testing
+    name: Legal Teammates
     steps:
+    - name: Checkout
+      uses: actions/checkout@v2
     - name: Finding Teammates
       id: legal-teammates
       uses: ./
