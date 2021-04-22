@@ -249,6 +249,10 @@ async function main() {
         const payload = context.payload;
         const { issue } = github.context;
 
+        console.log(studentListBranch);
+        console.log(studentListFile);
+        console.log(mainBranch);
+
         // Checks if the triggering action is caused by an issue
         if (!payload.issue) {
             core.debug(
@@ -283,11 +287,17 @@ async function main() {
         // Make a data structure for the students
         let mainStudentList = createMainStudentList(studentListText);
 
+        console.log(mainStudentList);
+
         // Get all folder names
         let folderNames = await getAllFolderNames(octokit, owner, repoName, mainBranch);
 
+        console.log(folderNames);
+
         // Update the main student list with the file names data
         let updatedMainStudentList = updateMainStudentList(mainStudentList, folderNames, askingStudentName);
+
+        console.log(updatedMainStudentList);
 
         const teammateComment = createTeammateComment(updatedMainStudentList, askingStudentName);
 
