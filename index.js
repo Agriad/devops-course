@@ -28,13 +28,13 @@ function createMainStudentList(studentListText) {
  * @param {Object} mainStudentList The student list data structure
  * @returns {string} The comment for the legal teammates
  */
-function createTeammateComment(updatedMainStudentList, askingStudentName) {
+function createTeammateComment(mainStudentList, askingStudentName) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
     let finalComment = "Legal Teammates:\n";
     let askingStudentCategories = [];
 
     // find the asking student's categories
-    updatedMainStudentList.forEach(studentArray => {
+    mainStudentList.forEach(studentArray => {
         console.log('considering the followng student as legal partner');
         const studentName = studentArray[0];
         console.log(studentName);
