@@ -10,7 +10,7 @@ const atob = require('atob');
  */
 function createMainStudentList(studentListText) {
     let names = studentListText.split("\n");
-    let regex = [a-z0-9];
+    let regex = /[a-z0-9]/;
     let dataStructure = [];
 
     names.forEach(name => {
