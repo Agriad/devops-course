@@ -3,14 +3,12 @@ on:
     types: [opened, reopened]
 
 jobs:
-  hello_world_job:
+  legal_teammates:
     runs-on: ubuntu-latest
     name: testing
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Hello world action step
-      id: hello
+    - name: Finding Teammates
+      id: legal teammates
       uses: ./
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
