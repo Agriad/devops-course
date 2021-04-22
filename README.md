@@ -6,3 +6,4 @@
 * Alice [essay, executable-tutorial, feedback]  
 * Eve [open-source, presentation]
 * Zack []
+* Joe [open-source, presentation]
