@@ -10,13 +10,14 @@ const atob = require('atob');
  */
 function createMainStudentList(studentListText) {
     let names = studentListText.split("\n");
-    names.pop();
-    names.sort();
+    let regex = /[a-z0-9]/g;
     let dataStructure = [];
 
     names.forEach(name => {
-        let data = [name, 0, []];
-        dataStructure.push(data)
+        if (name.match(regex)) {
+            let data = [name, 0, []];
+            dataStructure.push(data);
+        }
     });
 
     return dataStructure
@@ -48,8 +49,9 @@ function createTeammateComment(mainStudentList, askingStudentName) {
 
         // check if asking student has worked 4 project
         // check if asking student has worked in this category
-        if (askingStudentCategories < 4 && !askingStudentCategories.includes(category)) {
+        if (askingStudentCategories.length < 4 && !askingStudentCategories.includes(category)) {
             // go through the main list of students
+
             mainStudentList.forEach(studentArray => {
                 const studentName = studentArray[0];
                 const studentCategories = studentArray[2];
@@ -249,6 +251,7 @@ async function main() {
         const payload = context.payload;
         const { issue } = github.context;
 
+
         // Checks if the triggering action is caused by an issue
         if (!payload.issue) {
             core.debug(
@@ -286,6 +289,8 @@ async function main() {
         // Get all folder names
         let folderNames = await getAllFolderNames(octokit, owner, repoName, mainBranch);
 
+        console.log(folderNames);
+
         // Update the main student list with the file names data
         let updatedMainStudentList = updateMainStudentList(mainStudentList, folderNames, askingStudentName);
 
@@ -305,10 +310,11 @@ async function main() {
             owner: issue.owner,
             repo: issue.repo,
             issue_number: issue.number,
-            body: "Good luck with your project!\n" +
-                "If you would like to search for more potential teammates, " +
+            body: "Good luck with your projects!\n" +
+                "If you would like to search for potential teammates again, " +
                 "please create a new issue with the template title:\n" +
-                "\"Teammate request: your-kth-email@kth.se\"."
+                "\"Teammate request: your-kth-email@kth.se\"\n" +
+                "or reopen this issue."
         });
 
         // Closes the issue
