@@ -6093,14 +6093,10 @@ function createTeammateComment(mainStudentList, askingStudentName) {
 
     // find the asking student's categories
     mainStudentList.forEach(studentArray => {
-        console.log('considering the followng student as legal partner');
         const studentName = studentArray[0];
-        console.log(studentName);
 
         if (studentName.localeCompare(askingStudentName) == 0) {
             askingStudentCategories = studentArray[2];
-            console.log('I have worked in the following cathegories ');
-            console.log(askingStudentCategories);
         }
     });
 
@@ -6113,8 +6109,6 @@ function createTeammateComment(mainStudentList, askingStudentName) {
         // check if asking student has worked in this category
         if (askingStudentCategories.length < 4 && !askingStudentCategories.includes(category)) {
             // go through the main list of students
-            console.log("I have not worked in this category before:");
-            console.log(category);
 
             mainStudentList.forEach(studentArray => {
                 const studentName = studentArray[0];
@@ -6350,8 +6344,6 @@ async function main() {
         // Make a data structure for the students
         let mainStudentList = createMainStudentList(studentListText);
 
-        console.log(mainStudentList);
-
         // Get all folder names
         let folderNames = await getAllFolderNames(octokit, owner, repoName, mainBranch);
 
@@ -6359,8 +6351,6 @@ async function main() {
 
         // Update the main student list with the file names data
         let updatedMainStudentList = updateMainStudentList(mainStudentList, folderNames, askingStudentName);
-
-        console.log(updatedMainStudentList);
 
         const teammateComment = createTeammateComment(updatedMainStudentList, askingStudentName);
 
