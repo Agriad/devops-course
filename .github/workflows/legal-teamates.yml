@@ -14,6 +14,6 @@ jobs:
       uses: ./
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        list-branch: "khaes-kth-registered_ids"
-        list-file: "Registered_KTH_IDs.txt"
-        main-branch: "2021"
+        list-branch: "demo"
+        list-file: "Registered_IDs.txt"
+        main-branch: "demo"
