@@ -28,17 +28,21 @@ function createMainStudentList(studentListText) {
  * @param {Object} mainStudentList The student list data structure
  * @returns {string} The comment for the legal teammates
  */
-function createTeammateComment(mainStudentList, askingStudentName) {
+function createTeammateComment(updatedMainStudentList, askingStudentName) {
     const projects = ["course-automation", "demo", "essay", "executable-tutorial", "feedback", "open-source", "presentation"];
     let finalComment = "Legal Teammates:\n";
     let askingStudentCategories = [];
 
     // find the asking student's categories
-    mainStudentList.forEach(studentArray => {
+    updatedMainStudentList.forEach(studentArray => {
+        console.log('considering the followng student as legal partner');
         const studentName = studentArray[0];
+        console.log(studentName);
 
         if (studentName.localeCompare(askingStudentName) == 0) {
             askingStudentCategories = studentArray[2];
+            console.log('I have worked in the following cathegories ');
+            console.log(askingStudentCategories);
         }
     });
 
@@ -51,6 +55,9 @@ function createTeammateComment(mainStudentList, askingStudentName) {
         // check if asking student has worked in this category
         if (askingStudentCategories < 4 && !askingStudentCategories.includes(category)) {
             // go through the main list of students
+            console.log("I have not worked in this category before:");
+            console.log(category);
+
             mainStudentList.forEach(studentArray => {
                 const studentName = studentArray[0];
                 const studentCategories = studentArray[2];
@@ -250,9 +257,6 @@ async function main() {
         const payload = context.payload;
         const { issue } = github.context;
 
-        console.log(studentListBranch);
-        console.log(studentListFile);
-        console.log(mainBranch);
 
         // Checks if the triggering action is caused by an issue
         if (!payload.issue) {
